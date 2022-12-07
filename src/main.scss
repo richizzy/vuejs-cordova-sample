@@ -1,0 +1,40 @@
+.Grid h2 {
+  text-align: center;
+  font-size: 2.6rem;
+}
+/* product definition Radio buttons Styling as tabs*/
+.Field-group {
+  display: flex;
+  flex-direction: row;
+  label.Radio {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0;
+    .Radio-label {
+      display: inline-block;
+      padding: 7px 20px;
+      font-family: sans-serif, Arial;
+      font-size: 16px;
+      margin-left: 0;
+      width: 100%;
+      border-bottom-width: 2px;
+      border-bottom-style: solid;
+      border-bottom-color: rgba(0, 0, 0, 0.1);
+      color: #105fa8;
+      background-color: transparent;
+      text-align: center;
+    }
+    input[type='radio']:checked ~ .Radio-wrapper .Radio-label {
+      border-color: #105fa8;
+      background-color: #105fa8;
+      color: #ffffff;
+    }
+    .Radio-span {
+      opacity: 0;
+      position: fixed;
+      width: 0;
+    }
+  }
+}

@@ -1,18 +1,30 @@
 import '@babel/polyfill';
 import Vue from 'vue';
-import vuetify from './plugins/vuetify';
-import './plugins/vuetify-extra';
 import App from './App.vue';
 import router from './router/index';
-import i18n from './i18n';
+import store from './store';
+import Vue2Filters from 'vue2-filters';
+import VueGtm from 'vue-gtm';
+import '@/main.scss';
 
-Vue.config.productionTip = false
+// import vuetify from './plugins/vuetify';
+// import './plugins/vuetify-extra';
+
+// VueAnalytics Configuration
+// we only want to track PROD and CAT environments - no DEMO environments.
+if (window.APP_CONFIG.ENVIRONMENT === 'PROD' || window.APP_CONFIG.ENVIRONMENT === 'CAT') {
+  Vue.use(VueGtm, {
+    id: window.APP_CONFIG.ENVIRONMENT === 'PROD' ? 'GTM-MCSK8C' : 'GTM-TX9N55',
+  });
+}
+
+Vue.config.productionTip = false;
+Vue.use(Vue2Filters);
 
 const init = () => {
   new Vue({
-    vuetify,
     router,
-    i18n,
+    store,
     render: h => h(App)
   }).$mount('#app')
 };

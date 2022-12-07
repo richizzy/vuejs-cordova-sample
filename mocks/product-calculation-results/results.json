@@ -1,0 +1,53 @@
+{
+  "insureds": [
+    {
+      "firstName": "Abby",
+      "middleName": "Rose",
+      "lastName": "Jones",
+      "gender": "FEMALE",
+      "tobaccoUse": "Yes",
+      "birthDate": "01/29/2000",
+      "annualEarnedIncome": "",
+      "birthCountry": "",
+      "occupationClass": "",
+      "riskClass": "",
+      "coverages": {
+        "base": [
+          {}
+        ],
+        "sis": [
+          {}
+        ]
+      },
+      "residentstate": "",
+      "additionalFields": {
+        "age": "30"
+      }
+    }
+  ],
+  "additionalFields": {
+    "totalPremiumAmount": "42",
+    "specialRestrictionEmployee": "",
+    "discountAssociationName": "",
+    "discountAssociationNumber": "",
+    "discountAssociationJoinDate": "",
+    "discountCommonGroupNumber": "",
+    "discountCommonEmployerName": "",
+    "discountCommonEmployerAddress": "",
+    "discountCommonEmployerApplicantNames": "",
+    "discountMultiPolicyLifePolicyNumber": "",
+    "discountMultiPolicyLtcPolicyNumber": "",
+    "discountHouseholdFullName": "",
+    "programsStudentProgram": "",
+    "programsStudentProgramProgramOfStudy": ""
+  },
+  "policyRenewability": "GUARANTEED RENEWABLE",
+  "benefitPeriod": "",
+  "eliminationPeriod": "",
+  "discountAssociationGroup": "",
+  "discountCommonEmployer": "",
+  "discountSelfEmployed": "",
+  "discountMultiPolicy": "",
+  "discountHousehold": ""
+}
+

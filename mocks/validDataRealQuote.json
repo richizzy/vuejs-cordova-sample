@@ -1,0 +1,109 @@
+{
+  "distributionChannel": "BROKERAGE",
+  "insureds": [
+    {
+      "firstName": "Marye",
+      "lastName": "AgeTestingTwo",
+      "gender": "FEMALE",
+      "tobaccoUse": "NO",
+      "additionalFields": {
+        "quotedAge": "25",
+        "issueAge": "25",
+        "occupationDescription": "MISC_OCCUPATION",
+        "occupationSpecialty": "OCC_CLASS_6A",
+        "selfEmployed": "NO",
+        "otherCoverageQuestion": "NO",
+        "insuredFullName": "Marye AgeTestingTwo",
+        "issueLimit": "20000",
+        "age": "25",
+        "occupationCode": "OCC_CODE_NA",
+        "distributionChannel": "BROKERAGE"
+      },
+      "residentialAddress": {
+        "state": "NE"
+      },
+      "riskClass": "RISK_CLASS_1",
+      "occupationClass": "OCCUPATION_CLASS_6A",
+      "annualEarnedIncome": "150000",
+      "coverages": {
+        "base": [
+          {
+            "additionalFields": {
+              "benefitAmountType": "MAXIMUM",
+              "baseMaximumBenefitAmount": "6900",
+              "discountAmount": "0",
+              "soPremBeforeDiscountMonthly": "31.1052",
+              "soPremBeforeDiscountAnnual": "355.488",
+              "soPremBeforeDiscountSemiAnnual": "183.07632",
+              "soPremBeforeDiscountQuarterly": "92.42688",
+              "aoPremBeforeDiscountMonthly": "25.5507",
+              "aoPremBeforeDiscountAnnual": "292.008",
+              "aoPremBeforeDiscountSemiAnnual": "150.38412",
+              "aoPremBeforeDiscountQuarterly": "75.92208",
+              "monthlyPremiumAmount": "56.66",
+              "annualPremiumAmount": "647.5",
+              "semiAnnualPremiumAmount": "333.46",
+              "quarterlyPremiumAmount": "168.35",
+              "coverageForm": "ICC19-D90-25625"
+            },
+            "benefitAmount": "6900",
+            "premiumAmount": "56.66"
+          }
+        ]
+      },
+      "ratedGender": "FEMALE"
+    }
+  ],
+  "additionalFields": {
+    "specialRestrictionEmployee": "NONE",
+    "totalMonthlyBenefitAmount": "6900",
+    "totalMonthlyMaximumCalc": "6900",
+    "discountAmount": "0",
+    "policyDiscountPercent": "1",
+    "policyFactorPercent": "0.07",
+    "policyFactorPercentMonthly": "0.07",
+    "policyFactorPercentAnnual": "0.8",
+    "policyFactorPercentSemiAnnual": "0.412",
+    "policyFactorPercentQuarterly": "0.208",
+    "tempCummPremiumAmountMonthly": "56.66",
+    "tempCummPremiumAmountAnnual": "647.5",
+    "tempCummPremiumAmountSemiAnnual": "333.46",
+    "tempCummPremiumAmountQuarterly": "168.35",
+    "totalPremiumBeforeDiscountMonthly": "56.66",
+    "totalPremiumBeforeDiscountAnnual": "0",
+    "totalPremiumBeforeDiscountSemiAnnual": "0",
+    "totalPremiumBeforeDiscountQuarterly": "0",
+    "totalMonthlyPremium": "56.66",
+    "totalAnnualPremium": "647.5",
+    "totalSemiAnnualPremium": "333.46",
+    "totalQuarterlyPremium": "168.35",
+    "tempCummPremiumAmountBeforeDiscountMonthly": "56.66",
+    "tempCummPremiumAmountBeforeDiscountAnnual": "647.5",
+    "tempCummPremiumAmountBeforeDiscountSemiAnnual": "333.46",
+    "tempCummPremiumAmountBeforeDiscountQuarterly": "168.35",
+    "statSeries": "50059"
+  },
+  "benefitPeriod": "BENEFIT_PERIOD_5YR",
+  "eliminationPeriod": "ELIMINATION_PERIOD_90_DAYS",
+  "policyRenewability": "GUARANTEED_RENEWABLE",
+  "paymentSchedule": "MONTHLY",
+  "discountAssociationGroup": "NO",
+  "discountCommonEmployer": "NO",
+  "discountSelfEmployed": "NO",
+  "discountMultiPolicy": "NO",
+  "discountHousehold": "NO",
+  "issuingCompany": "MUTUAL",
+  "issueState": "NE",
+  "owner": {
+    "gender": "FEMALE"
+  },
+  "policyPremiumAmount": "56.66",
+  "productDefinitionInfo": {
+    "productId": "DIAS19",
+    "productDefinitionVersion": "5.0.7"
+  },
+  "productId": "DIAS19",
+  "policyNumber": "000002356",
+  "quoteId": "8ireff",
+  "quoteUrl": "https://www.itg.ebp.aws.mutualofomaha.com/ebp-quote/quote/8ireff"
+}

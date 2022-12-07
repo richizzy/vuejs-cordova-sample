@@ -1,0 +1,2714 @@
+{
+  "fields" : {
+    "insureds" : {
+      "type" : "LIST",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+      "referenceName" : "insureds",
+      "validationRules" : [ "{\n   var numPrimary = 0;\n   var numSpouse = 0;\n   var numChildren = 0;\n   for(var i = 0; i < length(parent.insureds); i = i + 1) {\n      var insuredType = parent.insureds[i].insuredType;\n      if (insuredType === 'PRIMARY') {\n         numPrimary = numPrimary + 1;\n      } else if (insuredType === 'SPOUSE') {\n         numSpouse = numSpouse + 1;\n      } else if (insuredType === 'CHILD') {\n         numChildren = numChildren + 1;\n      }\n   }\n   var valid = true;\n   var productType = parent.productInfo.productType;\n   if (numPrimary !== 1) {\n      valid = \"Please specify only 1 Insured as type 'Primary'\";\n   } else if  ((\"INDIVIDUAL_AND_SPOUSE\" === productType || \"FAMILY\" === productType) && numSpouse !== 1) {\n      valid = \"Please specify 1 Insured as type 'Spouse'\";\n   } else if ((\"INDIVIDUAL_AND_CHILDREN\" === productType || \"FAMILY\" === productType) && numChildren < 1) {\n      valid = \"Please specify 1 or more Insured as type 'Child'\";\n   }\n   return valid;\n}", "{return length(parent.insureds) >= 1;}" ],
+      "objectFields" : {
+        "firstName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.firstName",
+          "validationRules" : [ "{return length(parent.firstName) <= 40;}" ],
+          "required" : "true",
+          "max" : "40"
+        },
+        "middleName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.middleName",
+          "validationRules" : [ "{return length(parent.middleName) <= 25;}" ],
+          "required" : "false",
+          "max" : "25"
+        },
+        "lastName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.lastName",
+          "validationRules" : [ "{return length(parent.lastName) <= 40;}" ],
+          "required" : "true",
+          "max" : "40"
+        },
+        "birthDate" : {
+          "type" : "DATE",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "insureds.birthDate",
+          "validationRules" : [ ],
+          "required" : "true"
+        },
+        "socialSecurityNumber" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.socialSecurityNumber",
+          "validationRules" : [ "{return length(parent.socialSecurityNumber) >= 11 && length(parent.socialSecurityNumber) <= 11;}" ],
+          "required" : "{\n   var required = parent.insuredType === 'PRIMARY';\n   return required;\n}",
+          "min" : "11",
+          "max" : "11",
+          "format" : "[0-9]{3}[-][0-9]{2}[-][0-9]{4}"
+        },
+        "homePhoneNumber" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.homePhoneNumber",
+          "validationRules" : [ "{return length(parent.homePhoneNumber) >= 12 && length(parent.homePhoneNumber) <= 12;}" ],
+          "required" : "{\n   var required = parent.insuredType === 'PRIMARY';\n   return required;\n}",
+          "min" : "12",
+          "max" : "12",
+          "format" : "[0-9]{3}[-][0-9]{3}[-][0-9]{4}"
+        },
+        "emailAddress" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.emailAddress",
+          "validationRules" : [ ],
+          "required" : "{\n   var required = parent.insuredType === 'PRIMARY';\n   return required;\n}"
+        },
+        "citizenship" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.citizenship",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "citizen" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.citizenship.citizen",
+              "validationRules" : [ ],
+              "required" : "true",
+              "possibleValues" : [ {
+                "value" : "YES",
+                "displayValue" : "Yes"
+              }, {
+                "value" : "NO",
+                "displayValue" : "No"
+              } ]
+            },
+            "permanentResidentCard" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.citizenship.permanentResidentCard",
+              "validationRules" : [ ],
+              "required" : "{\n  return parent.citizen === 'NO'\n}",
+              "possibleValues" : [ {
+                "value" : "YES",
+                "displayValue" : "Yes"
+              }, {
+                "value" : "NO",
+                "displayValue" : "No"
+              } ]
+            },
+            "permanentResidentCardNumber" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.citizenship.permanentResidentCardNumber",
+              "validationRules" : [ ],
+              "required" : "{\n  return parent.citizen === 'NO' && parent.permanentResidentCard === 'YES'\n}"
+            },
+            "additionalFields" : {
+              "type" : "OBJECT",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.citizenship.additionalFields",
+              "validationRules" : [ ],
+              "objectFields" : {
+                "dateOfArrival" : {
+                  "type" : "DATE",
+                  "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+                  "referenceName" : "insureds.citizenship.additionalFields.dateOfArrival",
+                  "validationRules" : [ ],
+                  "required" : "{\n  return parent.parent.citizen === 'NO' && parent.parent.permanentResidentCard === 'YES'\n}"
+                }
+              }
+            }
+          }
+        },
+        "coverages" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "insureds.coverages",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "BASE" : {
+              "type" : "LIST",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+              "referenceName" : "insureds.coverages.BASE",
+              "validationRules" : [ "{return length(parent.BASE) >= 1;}" ],
+              "objectFields" : {
+                "benefitAmount" : {
+                  "type" : "NUMBER",
+                  "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                  "referenceName" : "insureds.coverages.BASE.benefitAmount",
+                  "validationRules" : [ "{\n    var isValid = true;\n    var insuredType = parent.parent.parent.insuredType;\n    if (insuredType === \"PRIMARY\") {\n        if (parent.benefitAmount < 50000 || parent.benefitAmount > 500000) {\n            isValid = \"Please enter a face amount between $50,000 and $500,000.\"\n        }\n        if (parent.benefitAmount % 1000 !== 0) {\n            isValid = \"The face amount must be an increment of $1,000.\";\n        }\n    }\n    return isValid;\n}" ],
+                  "required" : "true",
+                  "calculationRules" : "{\n   var amount = parent.parent.parent.parent.additionalFields.policyBenefitAmount;\n   var insuredType = parent.parent.parent.insuredType;\n   if (insuredType === 'CHILD' && isDefined(amount)) {\n      amount = amount * 0.2;\n   }\n   return amount;\n}"
+                },
+                "premiumAmount" : {
+                  "type" : "NUMBER",
+                  "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                  "referenceName" : "insureds.coverages.BASE.premiumAmount",
+                  "validationRules" : [ ],
+                  "required" : "true",
+                  "calculationRules" : "{\n  var premiumAmount = 0;\n  if (parent.parent.parent.parent.paymentSchedule === 'MONTHLY') {\n    premiumAmount = parent.additionalFields.monthlyPremiumAmount;\n  } else if (parent.parent.parent.parent.paymentSchedule === 'QUARTERLY') {\n    premiumAmount = parent.additionalFields.quarterlyPremiumAmount;\n  } else if (parent.parent.parent.parent.paymentSchedule === 'SEMIANNUAL') {\n    premiumAmount = parent.additionalFields.semiannualPremiumAmount;\n  } else if (parent.parent.parent.parent.paymentSchedule === 'ANNUAL') {\n    premiumAmount = parent.additionalFields.annualPremiumAmount;\n  }\n  return premiumAmount;\n}"
+                },
+                "additionalFields" : {
+                  "type" : "OBJECT",
+                  "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                  "referenceName" : "insureds.coverages.BASE.additionalFields",
+                  "validationRules" : [ ],
+                  "objectFields" : {
+                    "monthlyPremiumAmount" : {
+                      "type" : "NUMBER",
+                      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                      "referenceName" : "insureds.coverages.BASE.additionalFields.monthlyPremiumAmount",
+                      "validationRules" : [ ],
+                      "required" : "false",
+                      "calculationRules" : "{\n    return parent.annualPremiumAmount * 0.0875\n}"
+                    },
+                    "quarterlyPremiumAmount" : {
+                      "type" : "NUMBER",
+                      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                      "referenceName" : "insureds.coverages.BASE.additionalFields.quarterlyPremiumAmount",
+                      "validationRules" : [ ],
+                      "required" : "false",
+                      "calculationRules" : "{\n    return parent.annualPremiumAmount * 0.26\n}"
+                    },
+                    "semiannualPremiumAmount" : {
+                      "type" : "NUMBER",
+                      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                      "referenceName" : "insureds.coverages.BASE.additionalFields.semiannualPremiumAmount",
+                      "validationRules" : [ ],
+                      "required" : "false",
+                      "calculationRules" : "{\n    return parent.annualPremiumAmount * 0.515\n}"
+                    },
+                    "annualPremiumAmount" : {
+                      "type" : "NUMBER",
+                      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+                      "referenceName" : "insureds.coverages.BASE.additionalFields.annualPremiumAmount",
+                      "validationRules" : [ ],
+                      "required" : "false",
+                      "calculationRules" : "{\n   var insuredType = parent.parent.parent.parent.insuredType;\n   var premium = 0;\n\n   if (isDefined(rates) && isDefined(parent.parent.parent.parent.parent.additionalFields.policyBenefitAmount)) {\n      var benefitAmountInThousands = parent.parent.parent.parent.parent.additionalFields.policyBenefitAmount / 1000;\n\n      var ropFactor = 0;\n      var hasRop = isDefined(parent.parent.parent.parent.parent.additionalFields.policyReturnOfPremiumRider);\n      if (hasRop && length(parent.parent.parent.parent.parent.additionalFields.policyReturnOfPremiumRider) > 0) {\n         if (isDefined(rates[0].ropRiderFactors)) {\n             ropFactor = rates[0].ropRiderFactors;\n         }\n      }\n      if (insuredType === 'PRIMARY') {\n         var rate = rates[0].baseRate;\n         var policyFee = 50;\n         var basePremium = benefitAmountInThousands * rate;\n         var ropPremium = (basePremium + policyFee) * ropFactor;\n         premium = basePremium + ropPremium + policyFee;\n      } else if (insuredType === 'SPOUSE' && isDefined(rates[0].spouseRate)) {\n         var rate = rates[0].spouseRate;\n         var basePremium = benefitAmountInThousands * rate;\n         var ropPremium = basePremium * ropFactor;\n         premium = basePremium + ropPremium;\n       } else if (insuredType === 'CHILD' && isDefined(rates[0].childrenRate)) {\n         var premiumHolderChild = parent.parent.parent.parent.additionalFields.premiumHolderChild;\n         if (isDefined(premiumHolderChild) && premiumHolderChild === 'YES') {\n            var rate = rates[0].childrenRate;\n            var basePremium = benefitAmountInThousands * rate;\n            var ropPremium = basePremium * ropFactor;\n            premium = basePremium + ropPremium;\n         } \n      }\n   }\n   return premium;\n }"
+                    }
+                  }
+                }
+              },
+              "minItemCount" : "1"
+            }
+          }
+        },
+        "residentialAddress" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "insureds.residentialAddress",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "addressLine1" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.residentialAddress.addressLine1",
+              "validationRules" : [ "{return length(parent.addressLine1) <= 40;}" ],
+              "required" : "{\n   var required = parent.parent.insuredType === 'PRIMARY';\n   return required;\n}",
+              "max" : "40"
+            },
+            "addressLine2" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.residentialAddress.addressLine2",
+              "validationRules" : [ "{return length(parent.addressLine2) <= 25;}" ],
+              "required" : "false",
+              "max" : "25"
+            },
+            "city" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.residentialAddress.city",
+              "validationRules" : [ "{return length(parent.city) <= 40;}" ],
+              "required" : "{\n   var required =parent.parent.insuredType === 'PRIMARY';\n   return required;\n}",
+              "max" : "40"
+            },
+            "state" : {
+              "type" : "LOOKUP",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+              "referenceName" : "insureds.residentialAddress.state",
+              "validationRules" : [ ],
+              "required" : "{\n   var required = parent.parent.insuredType === 'PRIMARY';\n   return required;\n}",
+              "tableName" : "productStateApproveTbl",
+              "column" : "approvedState"
+            },
+            "zipCode" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.residentialAddress.zipCode",
+              "validationRules" : [ "{return length(parent.zipCode) >= 5;}" ],
+              "required" : "{\n   var required = parent.parent.insuredType === 'PRIMARY';\n   return required;\n}",
+              "min" : "5",
+              "format" : "[0-9-]+"
+            }
+          }
+        },
+        "mailingAddress" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "insureds.mailingAddress",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "addressLine1" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.mailingAddress.addressLine1",
+              "validationRules" : [ "{return length(parent.addressLine1) <= 40;}" ],
+              "required" : "{\n   var mailingIndicator = isDefined(parent.parent.additionalFields.mailingAddressIndicator);\n   var isPrimary = parent.parent.insuredType === 'PRIMARY';\n   return mailingIndicator && isPrimary;\n}",
+              "calculationRules" : "{ var addressLine1 = (parent.parent.residentialAddress.addressLine1); return addressLine1; }",
+              "calculationCondition" : "{\n    var calculateOrNot = true;\n    if (isDefined(parent.parent.additionalFields.mailingAddressIndicator)) {\n        if (parent.parent.additionalFields.mailingAddressIndicator === 'NO') {\n            calculateOrNot = true;\n        } else {\n            calculateOrNot = false;\n        }\n        return calculateOrNot;\n    }\n}",
+              "max" : "40",
+              "format" : "[a-zA-Z0-9' -/;,.#&*()]+"
+            },
+            "addressLine2" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.mailingAddress.addressLine2",
+              "validationRules" : [ "{return length(parent.addressLine2) <= 25;}" ],
+              "required" : "false",
+              "calculationRules" : "{ var addressLine2 = (parent.parent.residentialAddress.addressLine2); return addressLine2; }",
+              "calculationCondition" : "{\n    var calculateOrNot = true;\n    if (isDefined(parent.parent.additionalFields.mailingAddressIndicator)) {\n        if (parent.parent.additionalFields.mailingAddressIndicator === 'NO') {\n            calculateOrNot = true;\n        } else {\n            calculateOrNot = false;\n        }\n        return calculateOrNot;\n    }\n}",
+              "max" : "25",
+              "format" : "[a-zA-Z0-9' -/;,.#&*()]+"
+            },
+            "city" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.mailingAddress.city",
+              "validationRules" : [ "{return length(parent.city) <= 40;}" ],
+              "required" : "{\n   var mailingIndicator = isDefined(parent.parent.additionalFields.mailingAddressIndicator);\n   var isPrimary = parent.parent.insuredType === 'PRIMARY';\n   return mailingIndicator && isPrimary;\n}",
+              "calculationRules" : "{ var city = (parent.parent.residentialAddress.city); return city; }",
+              "calculationCondition" : "{\n    var calculateOrNot = true;\n    if (isDefined(parent.parent.additionalFields.mailingAddressIndicator)) {\n        if (parent.parent.additionalFields.mailingAddressIndicator === 'NO') {\n            calculateOrNot = true;\n        } else {\n            calculateOrNot = false;\n        }\n        return calculateOrNot;\n    }\n}",
+              "max" : "40",
+              "format" : "[a-zA-Z' -]+"
+            },
+            "state" : {
+              "type" : "LOOKUP",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.mailingAddress.state",
+              "validationRules" : [ ],
+              "required" : "{\n   var mailingIndicator = isDefined(parent.parent.additionalFields.mailingAddressIndicator);\n   var isPrimary = parent.parent.insuredType === 'PRIMARY';\n   return mailingIndicator && isPrimary;\n}",
+              "calculationRules" : "{ var state = (parent.parent.residentialAddress.state); return state; }",
+              "calculationCondition" : "{\n    var calculateOrNot = true;\n    if (isDefined(parent.parent.additionalFields.mailingAddressIndicator)) {\n        if (parent.parent.additionalFields.mailingAddressIndicator === 'NO') {\n            calculateOrNot = true;\n        } else {\n            calculateOrNot = false;\n        }\n        return calculateOrNot;\n    }\n}",
+              "tableName" : "productStateApproveTbl",
+              "column" : "approvedState"
+            },
+            "zipCode" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.mailingAddress.zipCode",
+              "validationRules" : [ "{return length(parent.zipCode) >= 5;}" ],
+              "required" : "{\n   var mailingIndicator = isDefined(parent.parent.additionalFields.mailingAddressIndicator);\n   var isPrimary = parent.parent.insuredType === 'PRIMARY';\n   return mailingIndicator && isPrimary;\n}",
+              "calculationRules" : "{ var zip = (parent.parent.residentialAddress.zipCode); return zip; }",
+              "calculationCondition" : "{\n    var calculateOrNot = true;\n    if (isDefined(parent.parent.additionalFields.mailingAddressIndicator)) {\n        if (parent.parent.additionalFields.mailingAddressIndicator === 'NO') {\n            calculateOrNot = true;\n        } else {\n            calculateOrNot = false;\n        }\n        return calculateOrNot;\n    }\n}",
+              "min" : "5",
+              "format" : "[0-9-]+"
+            }
+          }
+        },
+        "gender" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "insureds.gender",
+          "validationRules" : [ ],
+          "required" : "true",
+          "possibleValues" : [ {
+            "value" : "MALE",
+            "displayValue" : "Male"
+          }, {
+            "value" : "FEMALE",
+            "displayValue" : "Female"
+          } ]
+        },
+        "additionalFields" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "insureds.additionalFields",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "age" : {
+              "type" : "NUMBER",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+              "referenceName" : "insureds.additionalFields.age",
+              "validationRules" : [ "{\n   var valid = true;\n   var insuredType = parent.parent.insuredType;\n   if (insuredType === \"CHILD\") {\n      if (parent.age >= 18) {\n          valid = \"Only children under 18 are qualified\"\n      }\n   } else {\n      if (parent.age < 18 || parent.age > 70) {\n         valid = \"Please enter an age between 18 and 70.\"\n      }\n   }\n   return valid;\n}" ],
+              "required" : "true",
+              "calculationRules" : "{\n   var age = null;\n   var birthDate = parent.parent.birthDate;\n   if (isDefined(birthDate)) {\n      var relativeToDate = dateNow();\n      var birthDateIsLeapDay = (getMonth(birthDate) === 2 && getDayOfMonth(birthDate) === 29);\n      var relativeToYear = getYear(relativeToDate);\n      var relativeToLeapYear = (relativeToYear % 4 === 0 && (relativeToYear % 100 !== 0 || relativeToYear % 400 === 0));\n      var birthMonth = getMonth(birthDate);\n      var birthDayOfMonth = getDayOfMonth(birthDate);\n\n      if (birthDateIsLeapDay && !relativeToLeapYear) {\n         // Set to the first of March, since that is basically the 29th on a non-leap year\n         birthMonth = 3;\n         birthDayOfMonth = 1;\n      }\n\n      // Set birth date to midnight of next day for comparison purposes\n      // (effectively giving until midnight + 30 days + 12 hours for signing)\n      birthDate = plusDays(dateFromComponents(\n         getYear(birthDate),\n         birthMonth,\n         birthDayOfMonth,\n         0, 0, 0\n         ), 1);\n\n      age = getYear(relativeToDate) - getYear(birthDate);\n      var monthDifference = getMonth(relativeToDate) - getMonth(birthDate);\n\n      var adjustment = 0;\n      if (monthDifference < 0) {\n         adjustment = 0 - 1;\n      } else if (monthDifference === 0) {\n         var relativeToDateTimeWithinMonth = (\n            getDayOfMonth(relativeToDate) * 24 * 60 * 60 +\n            getHours(relativeToDate) * 60 * 60 +\n            getMinutes(relativeToDate) * 60 +\n            getSeconds(relativeToDate)\n         );\n         var birthDateTimeWithinMonth = (\n            getDayOfMonth(birthDate) * 24 * 60 * 60 +\n            getHours(birthDate) * 60 * 60 +\n            getMinutes(birthDate) * 60 +\n            getSeconds(birthDate)\n         );\n\n         // Relative to date was earlier in the month, meaning their birth date is after the relative to date\n         if ((relativeToDateTimeWithinMonth - birthDateTimeWithinMonth) <= 0) {\n            adjustment = 0 - 1;\n         }\n      }\n      age = age + adjustment;\n   }\n   return age;\n}"
+            },
+            "insuredFullName" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.additionalFields.insuredFullName",
+              "validationRules" : [ ],
+              "required" : "false",
+              "calculationRules" : "{\n    var value = '';\n    if (isDefined(parent.parent.firstName)) {\n        value = concat(concat (value, ' '), parent.parent.firstName);\n    }\n    if (isDefined(parent.parent.middleName)) {\n        value = concat(concat (value, ' '), parent.parent.middleName);\n    }\n    if (isDefined(parent.parent.lastName)) {\n        value = concat(concat (value, ' '), parent.parent.lastName);\n    }\n    return value;\n}"
+            },
+            "fullResidentialAddress" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.additionalFields.fullResidentialAddress",
+              "validationRules" : [ ],
+              "required" : "false",
+              "calculationRules" : "{\n    var value = parent.parent.residentialAddress.addressLine1;\n\n    if (isDefined(parent.parent.residentialAddress.addressLine2)) {\n        value = concat(concat(value, ' '), parent.parent.residentialAddress.addressLine2);\n    }\n\n    if (isDefined(parent.parent.residentialAddress.city)) {\n        value = concat(concat(value, ' '), parent.parent.residentialAddress.city);\n    }\n\n    if (isDefined(parent.parent.residentialAddress.state)) {\n        value = concat(concat(value, ' '), parent.parent.residentialAddress.state);\n    }\n\n    if (isDefined(parent.parent.residentialAddress.zipCode)) {\n        value = concat(concat(value, ' '), parent.parent.residentialAddress.zipCode);\n    }\n\n    return value;\n}"
+            },
+            "mailingAddressIndicator" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.additionalFields.mailingAddressIndicator",
+              "validationRules" : [ ],
+              "required" : "false",
+              "possibleValues" : [ {
+                "value" : "YES",
+                "displayValue" : "Yes"
+              }, {
+                "value" : "NO",
+                "displayValue" : "No"
+              } ]
+            },
+            "premiumHolderChild" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+              "referenceName" : "insureds.additionalFields.premiumHolderChild",
+              "validationRules" : [ ],
+              "required" : "false",
+              "calculationRules" : "{\n   var premiumHolderIndex = -1;\n   var numChildren = 0;\n   var insured = parent.parent.parent.insureds;\n   for (var x = 0; x < length(insured); x = x + 1) {\n      if (insured[x].insuredType === 'CHILD') {\n         numChildren = numChildren + 1;\n         if (insured[x].additionalFields.premiumHolderChild === 'YES') {\n            premiumHolderIndex = x;\n         }\n      }\n   }\n   var isPremiumChild = 'NO';  \n   var indexOfThis = indexOf(insured, parent.parent);\n   if (indexOfThis === premiumHolderIndex || numChildren === 1) {\n      isPremiumChild = 'YES';\n   }\n   return isPremiumChild;\n}",
+              "possibleValues" : [ {
+                "value" : "YES",
+                "displayValue" : "Yes"
+              }, {
+                "value" : "NO",
+                "displayValue" : "No"
+              } ]
+            }
+          }
+        },
+        "applicationSignature" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.applicationSignature",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "signatureType" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.applicationSignature.signatureType",
+              "validationRules" : [ ],
+              "required" : "false",
+              "possibleValues" : [ {
+                "value" : "ELECTRONIC",
+                "displayValue" : "Electronic"
+              }, {
+                "value" : "VOICE",
+                "displayValue" : "Voice"
+              }, {
+                "value" : "PAPER",
+                "displayValue" : "Paper"
+              } ]
+            },
+            "signatureName" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.applicationSignature.signatureName",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureCity" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.applicationSignature.signatureCity",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureState" : {
+              "type" : "LOOKUP",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.applicationSignature.signatureState",
+              "validationRules" : [ ],
+              "required" : "false",
+              "tableName" : "stateTbl",
+              "column" : "state"
+            },
+            "signatureDate" : {
+              "type" : "DATE",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.applicationSignature.signatureDate",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureTimestamp" : {
+              "type" : "DATETIME",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.applicationSignature.signatureTimestamp",
+              "validationRules" : [ ],
+              "required" : "false"
+            }
+          }
+        },
+        "electronicConsentSignature" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.electronicConsentSignature",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "signatureType" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.electronicConsentSignature.signatureType",
+              "validationRules" : [ ],
+              "required" : "false",
+              "possibleValues" : [ {
+                "value" : "ELECTRONIC",
+                "displayValue" : "Electronic"
+              }, {
+                "value" : "VOICE",
+                "displayValue" : "Voice"
+              }, {
+                "value" : "PAPER",
+                "displayValue" : "Paper"
+              } ]
+            },
+            "signatureName" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "insureds.electronicConsentSignature.signatureName",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureCity" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.electronicConsentSignature.signatureCity",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureState" : {
+              "type" : "LOOKUP",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.electronicConsentSignature.signatureState",
+              "validationRules" : [ ],
+              "required" : "false",
+              "tableName" : "stateTbl",
+              "column" : "state"
+            },
+            "signatureDate" : {
+              "type" : "DATE",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.electronicConsentSignature.signatureDate",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureTimestamp" : {
+              "type" : "DATETIME",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "insureds.electronicConsentSignature.signatureTimestamp",
+              "validationRules" : [ ],
+              "required" : "false"
+            }
+          }
+        },
+        "willSignInState" : {
+          "type" : "LOOKUP",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "insureds.willSignInState",
+          "validationRules" : [ ],
+          "required" : "{\n    var required = false;\n    if (inWrappingContext('APPLICATION') && parent.insuredType === 'PRIMARY') {\n            required = true;\n        }\n    return required;\n}",
+          "tableName" : "stateTbl",
+          "column" : "state"
+        },
+        "insuredType" : {
+          "type" : "LOOKUP",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE", "UNDERWRITING" ],
+          "referenceName" : "insureds.insuredType",
+          "validationRules" : [ ],
+          "required" : "true",
+          "defaultValue" : "PRIMARY",
+          "tableName" : "insuredTypeTbl",
+          "column" : "insuredType",
+          "filters" : [ "parent.parent.productInfo.productType" ]
+        }
+      },
+      "minItemCount" : "1"
+    },
+    "payors" : {
+      "type" : "LIST",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+      "referenceName" : "payors",
+      "validationRules" : [ "{return length(parent.payors) >= 1;}" ],
+      "objectFields" : {
+        "achAccountType" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "payors.achAccountType",
+          "validationRules" : [ ],
+          "required" : "false",
+          "possibleValues" : [ {
+            "value" : "CHECKING",
+            "displayValue" : "Checking"
+          }, {
+            "value" : "SAVINGS",
+            "displayValue" : "Savings"
+          } ]
+        },
+        "achInstitutionName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "payors.achInstitutionName",
+          "validationRules" : [ ],
+          "required" : "false"
+        },
+        "achRoutingNumber" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "payors.achRoutingNumber",
+          "validationRules" : [ "{\n    var valid; if (isDefined(parent.achRoutingNumber) && (length(parent.achRoutingNumber) < 10 && length(parent.achRoutingNumber) > 8)) {\n        valid = true;\n    } else {\n        valid = 'Please enter a valid 9 digit routing number';\n    } return valid;\n}", "{return length(parent.achRoutingNumber) <= 9;}" ],
+          "required" : "true",
+          "max" : "9"
+        },
+        "achAccountNumber" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "payors.achAccountNumber",
+          "validationRules" : [ ],
+          "required" : "true"
+        },
+        "billingAddress" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "payors.billingAddress",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "addressLine1" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.billingAddress.addressLine1",
+              "validationRules" : [ "{return length(parent.addressLine1) <= 40;}" ],
+              "required" : "false",
+              "max" : "40"
+            },
+            "addressLine2" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.billingAddress.addressLine2",
+              "validationRules" : [ "{return length(parent.addressLine2) <= 25;}" ],
+              "required" : "false",
+              "max" : "25"
+            },
+            "city" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.billingAddress.city",
+              "validationRules" : [ "{return length(parent.city) <= 40;}" ],
+              "required" : "false",
+              "max" : "40"
+            },
+            "state" : {
+              "type" : "LOOKUP",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.billingAddress.state",
+              "validationRules" : [ ],
+              "required" : "false",
+              "tableName" : "stateTbl",
+              "column" : "state"
+            },
+            "zipCode" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.billingAddress.zipCode",
+              "validationRules" : [ "{\n    var valid = true;\n    var zipCode = parent.zipCode;\n\n     if (length(zipCode) < 5) {\n        valid = 'Zip code cannot be less than 5 digits';\n    } else if( length(zipCode) >  5) {\n                valid = 'Zip Code cannot be more than 5 digits';\n        }\n        return valid;\n}", "{return length(parent.zipCode) >= 5;}" ],
+              "required" : "false",
+              "min" : "5",
+              "format" : "[0-9-]+"
+            }
+          }
+        },
+        "additionalFields" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "payors.additionalFields",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "nameOnBankAccount" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.additionalFields.nameOnBankAccount",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "achAccountNumberConfirm" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.additionalFields.achAccountNumberConfirm",
+              "validationRules" : [ "{ var valid; if (toUpperCase(parent.parent.achAccountNumber) === toUpperCase(parent.achAccountNumberConfirm)) { valid = true; } else { valid = 'Account numbers do not match'; } return valid; }" ],
+              "required" : "true"
+            },
+            "achRoutingNumberConfirm" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "payors.additionalFields.achRoutingNumberConfirm",
+              "validationRules" : [ "{ var valid; if (toUpperCase(parent.parent.achRoutingNumber) === toUpperCase(parent.achRoutingNumberConfirm)) { valid = true; } else { valid = 'Routing numbers do not match'; } return valid; }", "{return length(parent.achRoutingNumberConfirm) >= 9 && length(parent.achRoutingNumberConfirm) <= 9;}" ],
+              "required" : "true",
+              "min" : "9",
+              "max" : "9"
+            }
+          }
+        }
+      },
+      "minItemCount" : "1"
+    },
+    "productInfo" : {
+      "type" : "OBJECT",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+      "referenceName" : "productInfo",
+      "validationRules" : [ ],
+      "objectFields" : {
+        "productType" : {
+          "type" : "LOOKUP",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "productInfo.productType",
+          "validationRules" : [ ],
+          "required" : "true",
+          "tableName" : "productTypeTbl",
+          "column" : "productType"
+        }
+      }
+    },
+    "paymentSchedule" : {
+      "type" : "ENUM",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+      "referenceName" : "paymentSchedule",
+      "validationRules" : [ ],
+      "required" : "true",
+      "possibleValues" : [ {
+        "value" : "MONTHLY",
+        "displayValue" : "Monthly"
+      }, {
+        "value" : "QUARTERLY",
+        "displayValue" : "Quarterly"
+      }, {
+        "value" : "SEMIANNUAL",
+        "displayValue" : "Twice a Year"
+      }, {
+        "value" : "ANNUAL",
+        "displayValue" : "Annually"
+      } ]
+    },
+    "paymentMethod" : {
+      "type" : "ENUM",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+      "referenceName" : "paymentMethod",
+      "validationRules" : [ ],
+      "required" : "true",
+      "possibleValues" : [ {
+        "value" : "ACH",
+        "displayValue" : "Automatic Bank Deductions"
+      } ]
+    },
+    "paymentWithdrawalDay" : {
+      "type" : "NUMBER",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+      "referenceName" : "paymentWithdrawalDay",
+      "validationRules" : [ "{ \nvar valid; \nif (parent.paymentWithdrawalDay <= 28 && parent.paymentWithdrawalDay >= 1) { \nvalid = true; \n} \nelse { \nvalid = 'Please specify a recurring payment date between the 1st and 28th of each month'; \n} \nreturn valid; \n}" ],
+      "required" : "true"
+    },
+    "additionalFields" : {
+      "type" : "OBJECT",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+      "referenceName" : "additionalFields",
+      "validationRules" : [ ],
+      "objectFields" : {
+        "monthlyPremiumAmount" : {
+          "type" : "NUMBER",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "additionalFields.monthlyPremiumAmount",
+          "validationRules" : [ ],
+          "required" : "false",
+          "calculationRules" : "{\n    return parent.annualPremiumAmount * 0.0875\n}"
+        },
+        "quarterlyPremiumAmount" : {
+          "type" : "NUMBER",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "additionalFields.quarterlyPremiumAmount",
+          "validationRules" : [ ],
+          "required" : "false",
+          "calculationRules" : "{\n    return parent.annualPremiumAmount * 0.26\n}"
+        },
+        "semiannualPremiumAmount" : {
+          "type" : "NUMBER",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "additionalFields.semiannualPremiumAmount",
+          "validationRules" : [ ],
+          "required" : "false",
+          "calculationRules" : "{\n    return parent.annualPremiumAmount * 0.515\n}"
+        },
+        "annualPremiumAmount" : {
+          "type" : "NUMBER",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "additionalFields.annualPremiumAmount",
+          "validationRules" : [ ],
+          "required" : "false",
+          "calculationRules" : "{\n  var premiumAmount = 0;\n  var policyFee = 50;\n  if (isDefined(rates)) {\n    var primary;\n    for (var x = 0; x < length(parent.parent.insureds); x = x + 1) {\n        if (parent.parent.insureds[x].insuredType === 'PRIMARY') {\n            primary = parent.parent.insureds[x];\n        }\n    }\n\n    if (isDefined(primary) && isDefined(primary.coverages)) {\n       var benefitAmountInThousands = parent.policyBenefitAmount / 1000;\n       var individualRatePer1000 = rates[0].baseRate;\n      var productType = parent.parent.productInfo.productType;\n       var spouseRatePer1000 = 0;\n       if (isDefined(rates[0].spouseRate) && (productType === 'INDIVIDUAL_AND_SPOUSE' || productType === 'FAMILY')) {\n         spouseRatePer1000 = rates[0].spouseRate;\n       }\n       var childrenRatePer1000 = 0;\n       if (isDefined(rates[0].childrenRate) && (productType === 'INDIVIDUAL_AND_CHILDREN' || productType === 'FAMILY')) {\n         childrenRatePer1000 = rates[0].childrenRate;\n       }\n\n       var cumulativeRate = individualRatePer1000 + spouseRatePer1000 + childrenRatePer1000;\n       var basePremium = benefitAmountInThousands * cumulativeRate;\n       var ropFactor = 0;\n       if (isDefined(parent.parent.additionalFields.policyReturnOfPremiumRider) && length(parent.parent.additionalFields.policyReturnOfPremiumRider) > 0) {\n           if (isDefined(rates[0].ropRiderFactors)) {\n               ropFactor = rates[0].ropRiderFactors;\n           }\n       }\n       var ropPremium = (basePremium + policyFee) * ropFactor;\n       premiumAmount = basePremium + ropPremium + policyFee;\n    }\n  }\n  return premiumAmount;\n}"
+        },
+        "isReplacingExistingCoverage" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "additionalFields.isReplacingExistingCoverage",
+          "validationRules" : [ ],
+          "required" : "true",
+          "possibleValues" : [ {
+            "value" : "YES",
+            "displayValue" : "Yes"
+          }, {
+            "value" : "NO",
+            "displayValue" : "No"
+          } ]
+        },
+        "isAddingToExistingCoverage" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "additionalFields.isAddingToExistingCoverage",
+          "validationRules" : [ ],
+          "required" : "true",
+          "possibleValues" : [ {
+            "value" : "YES",
+            "displayValue" : "Yes"
+          }, {
+            "value" : "NO",
+            "displayValue" : "No"
+          } ]
+        },
+        "existingCoverageText" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "additionalFields.existingCoverageText",
+          "validationRules" : [ ],
+          "required" : "{\n  var isRequired = false;\n  if(parent.isReplacingExistingCoverage === 'YES' || parent.isAddingToExistingCoverage === 'YES') {\n    isRequired = true;\n  }\n  return isRequired;\n}"
+        },
+        "askedEachQuestion" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "additionalFields.askedEachQuestion",
+          "validationRules" : [ ],
+          "required" : "true",
+          "possibleValues" : [ {
+            "value" : "YES",
+            "displayValue" : "Yes"
+          }, {
+            "value" : "NO",
+            "displayValue" : "No"
+          } ]
+        },
+        "isBankServicePlan" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "additionalFields.isBankServicePlan",
+          "validationRules" : [ ],
+          "required" : "false",
+          "calculationRules" : "{ return 'YES'; }",
+          "possibleValues" : [ {
+            "value" : "YES",
+            "displayValue" : "Yes"
+          } ]
+        },
+        "proposedInsuredInsuredThePayor" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE" ],
+          "referenceName" : "additionalFields.proposedInsuredInsuredThePayor",
+          "validationRules" : [ ],
+          "required" : "true",
+          "defaultValue" : "YES",
+          "possibleValues" : [ {
+            "value" : "YES",
+            "displayValue" : "Yes"
+          }, {
+            "value" : "NO",
+            "displayValue" : "No"
+          } ]
+        },
+        "policyReturnOfPremiumRider" : {
+          "type" : "LIST",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "additionalFields.policyReturnOfPremiumRider",
+          "validationRules" : [ "{return length(parent.policyReturnOfPremiumRider) <= 1;}" ],
+          "objectFields" : {
+            "coverageStatus" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+              "referenceName" : "additionalFields.policyReturnOfPremiumRider.coverageStatus",
+              "validationRules" : [ ],
+              "required" : "false",
+              "possibleValues" : [ {
+                "value" : "ACTIVE",
+                "displayValue" : "ACTIVE"
+              }, {
+                "value" : "INACTIVE",
+                "displayValue" : "INACTIVE"
+              } ]
+            }
+          },
+          "maxItemCount" : "1"
+        },
+        "policyBenefitAmount" : {
+          "type" : "NUMBER",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+          "referenceName" : "additionalFields.policyBenefitAmount",
+          "validationRules" : [ "{\n    var isValid = true;\n    if(parent.policyBenefitAmount < 50000 || parent.policyBenefitAmount > 500000) {\n        isValid = \"Please enter a face amount between $50,000 and $500,000.\"\n    }\n    if (parent.policyBenefitAmount % 1000 !== 0) {\n        isValid = \"The face amount must be an increment of $1,000.\";\n    }\n    return isValid;\n}" ],
+          "required" : "true"
+        }
+      }
+    },
+    "issueState" : {
+      "type" : "STRING",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "QUOTE" ],
+      "referenceName" : "issueState",
+      "validationRules" : [ ],
+      "required" : "true",
+      "calculationRules" : "{\nvar issueState;\nfor (var x = 0; x < length(parent.insureds); x = x + 1) {\n   if (parent.insureds[x].insuredType === 'PRIMARY') {\n      issueState = parent.insureds[x].residentialAddress.state;\n   }\n}\nreturn issueState;\n}"
+    },
+    "policyPremiumAmount" : {
+      "type" : "NUMBER",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "QUOTE" ],
+      "referenceName" : "policyPremiumAmount",
+      "validationRules" : [ ],
+      "required" : "false",
+      "calculationRules" : "{\n  var premiumAmount = 0;\n  if(parent.paymentSchedule === 'MONTHLY') {\n    premiumAmount = parent.additionalFields.monthlyPremiumAmount;\n  }\n  if(parent.paymentSchedule === 'QUARTERLY') {\n    premiumAmount = parent.additionalFields.quarterlyPremiumAmount;\n  }\n  if(parent.paymentSchedule === 'SEMIANNUAL') {\n    premiumAmount = parent.additionalFields.semiannualPremiumAmount;\n  }\n  if(parent.paymentSchedule === 'ANNUAL') {\n    premiumAmount = parent.additionalFields.annualPremiumAmount;\n  }\n  return premiumAmount;\n}"
+    },
+    "beneficiaries" : {
+      "type" : "LIST",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+      "referenceName" : "beneficiaries",
+      "validationRules" : [ "{return length(parent.beneficiaries) >= 1;}" ],
+      "objectFields" : {
+        "relationshipToInsured" : {
+          "type" : "ENUM",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "beneficiaries.relationshipToInsured",
+          "validationRules" : [ ],
+          "required" : "{\n    var isRequired = false;\n    if ((isDefined(parent.firstName)) || (isDefined(parent.middleName) || (isDefined(parent.lastName)))) {\n        isRequired = true;\n    }\n    return isRequired;\n}",
+          "possibleValues" : [ {
+            "value" : "SPOUSE",
+            "displayValue" : "Spouse"
+          }, {
+            "value" : "CHILD",
+            "displayValue" : "Child"
+          }, {
+            "value" : "FIANCE",
+            "displayValue" : "Fiance"
+          }, {
+            "value" : "PARTNER",
+            "displayValue" : "Partner"
+          }, {
+            "value" : "PARENT",
+            "displayValue" : "Parent"
+          }, {
+            "value" : "SIBLING",
+            "displayValue" : "Sibling"
+          }, {
+            "value" : "ESTATE",
+            "displayValue" : "Estate"
+          }, {
+            "value" : "TRUST",
+            "displayValue" : "Trust"
+          }, {
+            "value" : "OTHER",
+            "displayValue" : "Other"
+          } ]
+        },
+        "relationshipToInsuredOther" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "beneficiaries.relationshipToInsuredOther",
+          "validationRules" : [ ],
+          "required" : "{\n    var isRequired = false;\n    if (parent.relationshipToInsured === 'OTHER') {\n        isRequired = true;\n    }\n    return isRequired;\n}"
+        },
+        "firstName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "beneficiaries.firstName",
+          "validationRules" : [ "{return length(parent.firstName) <= 40;}" ],
+          "required" : "false",
+          "max" : "40"
+        },
+        "middleName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "beneficiaries.middleName",
+          "validationRules" : [ "{return length(parent.middleName) <= 25;}" ],
+          "required" : "false",
+          "max" : "25"
+        },
+        "lastName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "beneficiaries.lastName",
+          "validationRules" : [ "{return length(parent.lastName) <= 40;}" ],
+          "required" : "false",
+          "max" : "40"
+        },
+        "additionalFields" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "beneficiaries.additionalFields",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "fullName" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "beneficiaries.additionalFields.fullName",
+              "validationRules" : [ ],
+              "required" : "false",
+              "calculationRules" : "{\n    var value = '';\n    if (isDefined(parent.parent.firstName)) {\n        value = concat(concat (value, ' '), parent.parent.firstName);\n    }\n    if (isDefined(parent.parent.middleName)) {\n        value = concat(concat (value, ' '), parent.parent.middleName);\n    }\n    if (isDefined(parent.parent.lastName)) {\n        value = concat(concat (value, ' '), parent.parent.lastName);\n    }\n    return value;\n}"
+            }
+          }
+        }
+      },
+      "minItemCount" : "1"
+    },
+    "sellingProducers" : {
+      "type" : "LIST",
+      "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+      "referenceName" : "sellingProducers",
+      "validationRules" : [ "{return length(parent.sellingProducers) >= 1 && length(parent.sellingProducers) <= 3;}" ],
+      "objectFields" : {
+        "firstName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.firstName",
+          "validationRules" : [ ],
+          "required" : "true",
+          "format" : "[a-zA-Z' -]+"
+        },
+        "middleName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.middleName",
+          "validationRules" : [ ],
+          "required" : "false",
+          "format" : "[a-zA-Z]+"
+        },
+        "lastName" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.lastName",
+          "validationRules" : [ ],
+          "required" : "true",
+          "format" : "[a-zA-Z' -]+"
+        },
+        "emailAddress" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.emailAddress",
+          "validationRules" : [ ],
+          "required" : "true"
+        },
+        "producerNumber" : {
+          "type" : "STRING",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.producerNumber",
+          "validationRules" : [ "{\n    var value = true;\n    var number = toNumber(parent.producerNumber);\n\n    if (length(parent.producerNumber) !== 7) {\n        value = 'Producer Number should be seven digits';\n    }\n    return value;\n}" ],
+          "required" : "true"
+        },
+        "additionalFields" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.additionalFields",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "sellingProducersFullName" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "sellingProducers.additionalFields.sellingProducersFullName",
+              "validationRules" : [ ],
+              "required" : "false",
+              "calculationRules" : "{\n    var value = '';\n    if (isDefined(parent.parent.firstName)) {\n        value = concat(concat (value, ' '), parent.parent.firstName);\n    }\n    if (isDefined(parent.parent.middleName)) {\n        value = concat(concat (value, ' '), parent.parent.middleName);\n    }\n    if (isDefined(parent.parent.lastName)) {\n        value = concat(concat (value, ' '), parent.parent.lastName);\n    }\n    return value;\n}"
+            }
+          }
+        },
+        "applicationSignature" : {
+          "type" : "OBJECT",
+          "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+          "referenceName" : "sellingProducers.applicationSignature",
+          "validationRules" : [ ],
+          "objectFields" : {
+            "signatureType" : {
+              "type" : "ENUM",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "sellingProducers.applicationSignature.signatureType",
+              "validationRules" : [ ],
+              "required" : "false",
+              "possibleValues" : [ {
+                "value" : "ELECTRONIC",
+                "displayValue" : "Electronic"
+              }, {
+                "value" : "VOICE",
+                "displayValue" : "Voice"
+              }, {
+                "value" : "PAPER",
+                "displayValue" : "Paper"
+              } ]
+            },
+            "signatureName" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION" ],
+              "referenceName" : "sellingProducers.applicationSignature.signatureName",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureCity" : {
+              "type" : "STRING",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "sellingProducers.applicationSignature.signatureCity",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureState" : {
+              "type" : "LOOKUP",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "sellingProducers.applicationSignature.signatureState",
+              "validationRules" : [ ],
+              "required" : "false",
+              "tableName" : "stateTbl",
+              "column" : "state"
+            },
+            "signatureDate" : {
+              "type" : "DATE",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "sellingProducers.applicationSignature.signatureDate",
+              "validationRules" : [ ],
+              "required" : "false"
+            },
+            "signatureTimestamp" : {
+              "type" : "DATETIME",
+              "contexts" : [ "ADMIN", "ADMIN_PRE_ISSUE", "APPLICATION", "UNDERWRITING" ],
+              "referenceName" : "sellingProducers.applicationSignature.signatureTimestamp",
+              "validationRules" : [ ],
+              "required" : "false"
+            }
+          }
+        }
+      },
+      "minItemCount" : "1",
+      "maxItemCount" : "3"
+    },
+    "productDefinitionInfo" : {
+      "type" : "OBJECT",
+      "contexts" : [ "INIT", "APPLICATION", "QUOTE", "UNDERWRITING", "ADMIN", "APPLICATION_PAYOR", "PAYOR", "ADMIN_PRE_ISSUE" ],
+      "referenceName" : "productDefinitionInfo",
+      "validationRules" : [ ],
+      "objectFields" : {
+        "productId" : {
+          "type" : "ENUM",
+          "contexts" : [ "INIT", "APPLICATION", "QUOTE", "UNDERWRITING", "ADMIN", "APPLICATION_PAYOR", "PAYOR", "ADMIN_PRE_ISSUE" ],
+          "referenceName" : "productDefinitionInfo.productId",
+          "validationRules" : [ ],
+          "required" : "true",
+          "calculationRules" : "{ return 'AD50AD' }",
+          "defaultValue" : "AD50AD",
+          "possibleValues" : [ {
+            "value" : "AD50AD",
+            "displayValue" : "AD50AD"
+          } ]
+        },
+        "productDefinitionVersion" : {
+          "type" : "STRING",
+          "contexts" : [ "INIT", "APPLICATION", "QUOTE", "UNDERWRITING", "ADMIN", "APPLICATION_PAYOR", "PAYOR", "ADMIN_PRE_ISSUE" ],
+          "referenceName" : "productDefinitionInfo.productDefinitionVersion",
+          "validationRules" : [ ],
+          "required" : "{ return true; }",
+          "calculationRules" : "{ return '1.0-SNAPSHOT' }",
+          "defaultValue" : "1.0-SNAPSHOT"
+        }
+      }
+    }
+  },
+  "documents" : {
+    "CLIENT_APP_PACK" : {
+      "isBundle" : "true",
+      "context" : "APPLICATION",
+      "templates" : [ {
+        "type" : "REFERENCE",
+        "templateName" : "APP_FORM"
+      } ]
+    },
+    "E_CONSENT_DISCLOSURE" : {
+      "isBundle" : "false",
+      "context" : "APPLICATION",
+      "templates" : [ {
+        "type" : "FILLABLE_PDF",
+        "templateName" : "econsent_1321_.pdf"
+      } ]
+    },
+    "QUOTE_ILLUSTRATION" : {
+      "isBundle" : "false",
+      "context" : "QUOTE",
+      "templates" : [ {
+        "type" : "THYMELEAF_HTML",
+        "inclusionRule" : "{return true;}",
+        "templateName" : "illustration.html"
+      } ]
+    },
+    "PRODUCER_APP_PACK" : {
+      "isBundle" : "true",
+      "context" : "APPLICATION",
+      "templates" : [ {
+        "type" : "REFERENCE",
+        "templateName" : "APP_FORM"
+      } ]
+    },
+    "APP_FORM" : {
+      "isBundle" : "false",
+      "context" : "APPLICATION",
+      "templates" : [ {
+        "type" : "FILLABLE_PDF",
+        "templateName" : "APP_FORM_NATIONAL.pdf"
+      } ]
+    }
+  },
+  "resources" : { },
+  "uiForms" : {
+    "quote" : {
+      "sections" : [ {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Personal Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.personalInformationHeader"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "SELECT",
+            "label" : "Plan Type",
+            "enabled" : "true",
+            "visible" : "true",
+            "value" : "INDIVIDUAL",
+            "name" : "productInfo.productType"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "REPEATABLE_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "insureds",
+            "group" : {
+              "title" : "Insured",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "SELECT",
+                  "label" : "Insured Type",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].insuredType"
+                }, {
+                  "type" : "SELECT",
+                  "label" : "Select a State",
+                  "subLabel" : "",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].residentialAddress.state"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "DATE",
+                  "label" : "Date of Birth",
+                  "subLabel" : "MM-DD-YYYY",
+                  "enabled" : "true",
+                  "maxLength" : "10",
+                  "visible" : "true",
+                  "name" : "insureds[$].birthDate"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Current Age",
+                  "subLabel" : "",
+                  "enabled" : "false",
+                  "maxLength" : "2",
+                  "visible" : "true",
+                  "name" : "insureds[$].additionalFields.age"
+                }, {
+                  "type" : "RADIO",
+                  "label" : "Gender",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].gender"
+                } ]
+              } ]
+            }
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Plan Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.planInformation"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "TEXT",
+            "label" : "Face Amount",
+            "subLabel" : "($50,000 - $500,000) - increments of $1,000",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "additionalFields.policyBenefitAmount"
+          }, {
+            "type" : "SELECT",
+            "label" : "Payment Mode",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "paymentSchedule"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Riders",
+            "enabled" : "true",
+            "visible" : "{ var isRequired = false; var primary; for (var x = 0; x < length(parent.insureds); x = x + 1) { if (parent.insureds[x].insuredType === 'PRIMARY') { primary = parent.insureds[x]; } } var age; if (isDefined(primary)) { age = primary.additionalFields.age; } if (isDefined(age) && age >= 18 && age <= 50) { var state = primary.residentialAddress.state; if (state !== 'AR' && state !== 'CT' && state !== 'GA' && state !== 'PA' && state !== 'VA') { isRequired = true; } } return isRequired; }",
+            "name" : "ui.riders"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "REPEATABLE_GROUP",
+            "label" : "Return Of Premium Rider",
+            "enabled" : "true",
+            "visible" : "{ var isRequired = false; var primary; for (var x = 0; x < length(parent.parent.insureds); x = x + 1) { if (parent.parent.insureds[x].insuredType === 'PRIMARY') { primary = parent.parent.insureds[x]; } } var age; if (isDefined(primary)) { age = primary.additionalFields.age; } if (isDefined(age) && age >= 18 && age <= 50) { var state = primary.residentialAddress.state; if (state !== 'AR' && state !== 'CT' && state !== 'GA' && state !== 'PA' && state !== 'VA') { isRequired = true; } } return isRequired; }",
+            "name" : "additionalFields.policyReturnOfPremiumRider",
+            "group" : {
+              "title" : "The Return Of Premium Option has been added to your policy.",
+              "rows" : [ {
+                "indent" : "1",
+                "fields" : [ {
+                  "type" : "PARAGRAPH",
+                  "label" : "",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "ui.returnOfPremiumRiderSpaceholder"
+                } ]
+              } ]
+            },
+            "maxItemCount" : "1"
+          } ]
+        } ],
+        "title" : "Personal Info"
+      } ]
+    },
+    "eapp" : {
+      "sections" : [ {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "SELECT",
+            "label" : "Type of Plan",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "productInfo.productType"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Insured Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.personalInformationHeader"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "REPEATABLE_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "insureds",
+            "group" : {
+              "title" : "Insured",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "SELECT",
+                  "label" : "Insured Type",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].insuredType"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "First Name",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].firstName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Middle Name",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].middleName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Last Name",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].lastName"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "RADIO",
+                  "label" : "Gender",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].gender"
+                }, {
+                  "type" : "DATE",
+                  "label" : "Date of Birth",
+                  "subLabel" : "MM-DD-YYYY",
+                  "enabled" : "true",
+                  "maxLength" : "10",
+                  "visible" : "true",
+                  "name" : "insureds[$].birthDate"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Current Age",
+                  "subLabel" : "",
+                  "enabled" : "false",
+                  "maxLength" : "2",
+                  "visible" : "true",
+                  "name" : "insureds[$].additionalFields.age"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Address Line 1",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "{return parent.parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].residentialAddress.addressLine1"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Address Line 2",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "{return parent.parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].residentialAddress.addressLine2"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "City",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "{return parent.parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].residentialAddress.city"
+                }, {
+                  "type" : "SELECT",
+                  "label" : "State",
+                  "enabled" : "true",
+                  "visible" : "{return parent.parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].residentialAddress.state"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Zip Code",
+                  "enabled" : "true",
+                  "maxLength" : "10",
+                  "visible" : "{return parent.parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].residentialAddress.zipCode"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "CHECKBOX",
+                  "label" : "Select if Mailing Address is different than Residence Address",
+                  "enabled" : "true",
+                  "visible" : "{return parent.parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].additionalFields.mailingAddressIndicator"
+                } ]
+              }, {
+                "indent" : "1",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Mailing Address",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "{return toUpperCase(parent.parent.additionalFields.mailingAddressIndicator) === 'YES';}",
+                  "name" : "insureds[$].mailingAddress.addressLine1"
+                } ]
+              }, {
+                "indent" : "1",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "{return toUpperCase(parent.parent.additionalFields.mailingAddressIndicator) === 'YES';}",
+                  "name" : "insureds[$].mailingAddress.addressLine2"
+                } ]
+              }, {
+                "indent" : "1",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "City",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "{return toUpperCase(parent.parent.additionalFields.mailingAddressIndicator) === 'YES';}",
+                  "name" : "insureds[$].mailingAddress.city"
+                }, {
+                  "type" : "SELECT",
+                  "label" : "State",
+                  "enabled" : "true",
+                  "visible" : "{return toUpperCase(parent.parent.additionalFields.mailingAddressIndicator) === 'YES';}",
+                  "name" : "insureds[$].mailingAddress.state"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Zip Code",
+                  "enabled" : "true",
+                  "maxLength" : "5",
+                  "visible" : "{return toUpperCase(parent.parent.additionalFields.mailingAddressIndicator) === 'YES';}",
+                  "name" : "insureds[$].mailingAddress.zipCode"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Telephone Number",
+                  "subLabel" : "###-###-####",
+                  "enabled" : "true",
+                  "maxLength" : "19",
+                  "visible" : "{return parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].homePhoneNumber"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Email Address",
+                  "enabled" : "true",
+                  "maxLength" : "53",
+                  "visible" : "{return parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].emailAddress"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Social Security Number",
+                  "subLabel" : "###-##-####",
+                  "enabled" : "true",
+                  "maxLength" : "11",
+                  "visible" : "{return parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].socialSecurityNumber"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "SELECT",
+                  "label" : "Verify the state where applicant is signing the application",
+                  "enabled" : "true",
+                  "visible" : "{return parent.insuredType === 'PRIMARY';}",
+                  "name" : "insureds[$].willSignInState"
+                }, {
+                  "type" : "RADIO",
+                  "label" : "Is the Proposed Insureds a citizen of the United States?",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "insureds[$].citizenship.citizen"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "RADIO",
+                  "label" : "Does the Proposed Insureds have a Permanent Resident Card (Form I-551) Number(s)?",
+                  "enabled" : "true",
+                  "visible" : "{return toUpperCase(parent.citizen)==='NO';}",
+                  "name" : "insureds[$].citizenship.permanentResidentCard"
+                } ]
+              }, {
+                "indent" : "1",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Card Number(s)",
+                  "enabled" : "true",
+                  "maxLength" : "100",
+                  "visible" : "{return toUpperCase(parent.citizen)==='NO' && toUpperCase(parent.permanentResidentCard)==='YES';}",
+                  "name" : "insureds[$].citizenship.permanentResidentCardNumber"
+                }, {
+                  "type" : "DATE",
+                  "label" : "Date of Arrival in U.S.",
+                  "subLabel" : "MM-DD-YYYY",
+                  "enabled" : "true",
+                  "maxLength" : "10",
+                  "visible" : "{return toUpperCase(parent.parent.citizen)==='NO' && toUpperCase(parent.parent.permanentResidentCard)==='YES';}",
+                  "name" : "insureds[$].citizenship.additionalFields.dateOfArrival"
+                } ]
+              } ]
+            }
+          } ]
+        } ],
+        "title" : "Primary Insured"
+      }, {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Insurance Applied For",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.policyInformationHeader"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "TEXT",
+            "label" : "Accidental Death Insurance Benefit Amount",
+            "subLabel" : "($50,000 - $500,000) - increments of $1,000",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "additionalFields.policyBenefitAmount"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "PARAGRAPH",
+            "label" : "Benefits Include: 100% increase for Common Carrier Accidents, 25% increase for Motor Vehicle/Auto Pedestrian Accidents",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.benefitDescription"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Rider",
+            "enabled" : "true",
+            "visible" : "{ var isRequired = false; var primary; for (var x = 0; x < length(parent.insureds); x = x + 1) { if (parent.insureds[x].insuredType === 'PRIMARY') { primary = parent.insureds[x]; } } var age; if (isDefined(primary)) { age = primary.additionalFields.age; } if (isDefined(age) && age >= 18 && age <= 50) { var state = primary.residentialAddress.state; if (state !== 'AR' && state !== 'CT' && state !== 'GA' && state !== 'PA' && state !== 'VA') { isRequired = true; } } return isRequired; }",
+            "name" : "ui.riders"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "REPEATABLE_GROUP",
+            "label" : "Return Of Premium Rider",
+            "enabled" : "true",
+            "visible" : "{ var isRequired = false; var primary; for (var x = 0; x < length(parent.parent.insureds); x = x + 1) { if (parent.parent.insureds[x].insuredType === 'PRIMARY') { primary = parent.parent.insureds[x]; } } var age; if (isDefined(primary)) { age = primary.additionalFields.age; } if (isDefined(age) && age >= 18 && age <= 50) { var state = primary.residentialAddress.state; if (state !== 'AR' && state !== 'CT' && state !== 'GA' && state !== 'PA' && state !== 'VA') { isRequired = true; } } return isRequired; }",
+            "name" : "additionalFields.policyReturnOfPremiumRider",
+            "group" : {
+              "title" : "The Return Of Premium Option has been added to your policy.",
+              "rows" : [ {
+                "indent" : "1",
+                "fields" : [ {
+                  "type" : "PARAGRAPH",
+                  "label" : "",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "ui.returnOfPremiumRiderSpaceholder"
+                } ]
+              } ]
+            },
+            "maxItemCount" : "1"
+          } ]
+        } ],
+        "title" : "Plan Coverage"
+      }, {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Beneficiary Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.beneficiaryInformationHeader"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "FIELD_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.beneficiaries[0]",
+            "group" : {
+              "title" : "Primary Beneficiary",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "First Name",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "true",
+                  "name" : "beneficiaries[0].firstName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Middle Initial",
+                  "enabled" : "true",
+                  "maxLength" : "1",
+                  "visible" : "true",
+                  "name" : "beneficiaries[0].middleName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Last Name",
+                  "enabled" : "true",
+                  "maxLength" : "30",
+                  "visible" : "true",
+                  "name" : "beneficiaries[0].lastName"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "SELECT",
+                  "label" : "Relationship to Proposed Insured",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "beneficiaries[0].relationshipToInsured"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Please Specify:",
+                  "enabled" : "true",
+                  "maxLength" : "35",
+                  "visible" : "{return toUpperCase(parent.relationshipToInsured) === 'OTHER';}",
+                  "name" : "beneficiaries[0].relationshipToInsuredOther"
+                } ]
+              } ]
+            }
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "FIELD_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.beneficiaries[1]",
+            "group" : {
+              "title" : "Contingent Beneficiary",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "First Name",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "true",
+                  "name" : "beneficiaries[1].firstName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Middle Initial",
+                  "enabled" : "true",
+                  "maxLength" : "1",
+                  "visible" : "true",
+                  "name" : "beneficiaries[1].middleName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Last Name",
+                  "enabled" : "true",
+                  "maxLength" : "30",
+                  "visible" : "true",
+                  "name" : "beneficiaries[1].lastName"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "SELECT",
+                  "label" : "Relationship to Proposed Insured",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "beneficiaries[1].relationshipToInsured"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Please Specify:",
+                  "enabled" : "true",
+                  "maxLength" : "35",
+                  "visible" : "{return toUpperCase(parent.relationshipToInsured) === 'OTHER';}",
+                  "name" : "beneficiaries[1].relationshipToInsuredOther"
+                } ]
+              } ]
+            }
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "PARAGRAPH",
+            "label" : "Note: If no beneficiary is named, benefits will be paid to the Primary Insured's estate.",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.beneficiaryNote"
+          } ]
+        } ],
+        "title" : "Beneficiaries"
+      }, {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Replacement Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.replacementInformationHeading"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "RADIO",
+            "label" : "Is the coverage applied for replacing any existing coverage for any Proposed Insured?",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "additionalFields.isReplacingExistingCoverage"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "RADIO",
+            "label" : "Will the coverage being applied for be added to any existing coverage for any Proposed Insured?",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "additionalFields.isAddingToExistingCoverage"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "TEXT",
+            "label" : "Please give details",
+            "enabled" : "true",
+            "visible" : "{var isRequired = false;if(parent.isReplacingExistingCoverage === 'YES' || parent.isAddingToExistingCoverage === 'YES') {isRequired = true;}return isRequired;}",
+            "name" : "additionalFields.existingCoverageText"
+          } ]
+        } ],
+        "title" : "Other Coverage"
+      }, {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Payment Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.replacementInformationHeadingPayment"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "PARAGRAPH",
+            "label" : "MONEY WILL BE WITHDRAWN FROM YOUR ACCOUNT AT POLICY ACCEPTANCE. The first withdrawal date or charge date may be different from the monthly date selected below for RECURRING premiums. Depending on the amount of time elapsed between the policy date and the date the policy is accepted, the amount of the withdrawal or charge may exceed one modal premium and may occur on a date other than the policy date. The Proposed Insured/Insured will NOT receive premium billing notices for this premium payment. We CANNOT establish electronic payments from foreign banks.",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.paymentNoteParagraph"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "RADIO",
+            "label" : "Verify Payment Method",
+            "enabled" : "false",
+            "visible" : "true",
+            "value" : "ACH",
+            "name" : "paymentMethod"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "SELECT",
+            "label" : "Renewal Payment Mode",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "paymentSchedule"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "TEXT",
+            "label" : "Specify the date Recurring Premiums will be withdrawn (1st through the 28th of the month)",
+            "enabled" : "true",
+            "maxLength" : "2",
+            "visible" : "true",
+            "name" : "paymentWithdrawalDay"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "SUBHEADING",
+            "label" : "Provide Account Information",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.provideAccountInformation"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "RADIO",
+            "label" : "Account Type (select one)",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "payors[0].achAccountType"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "FIELD_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.payorBillingAddress",
+            "group" : {
+              "title" : "Billing Address",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Address Line 1",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "true",
+                  "name" : "payors[0].billingAddress.addressLine1"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Address Line 2",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "true",
+                  "name" : "payors[0].billingAddress.addressLine2"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "City",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "true",
+                  "name" : "payors[0].billingAddress.city"
+                }, {
+                  "type" : "SELECT",
+                  "label" : "State",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "payors[0].billingAddress.state"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Zip Code",
+                  "enabled" : "true",
+                  "maxLength" : "10",
+                  "visible" : "true",
+                  "name" : "payors[0].billingAddress.zipCode"
+                } ]
+              } ]
+            }
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "FIELD_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.payorBankInformation",
+            "group" : {
+              "title" : "Bank Information",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Name as shown on bank account",
+                  "enabled" : "true",
+                  "maxLength" : "60",
+                  "visible" : "true",
+                  "name" : "payors[0].additionalFields.nameOnBankAccount"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Financial Institution",
+                  "enabled" : "true",
+                  "maxLength" : "60",
+                  "visible" : "true",
+                  "name" : "payors[0].achInstitutionName"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "NUMBER",
+                  "label" : "Routing Number",
+                  "enabled" : "true",
+                  "maxLength" : "9",
+                  "visible" : "true",
+                  "name" : "payors[0].achRoutingNumber"
+                }, {
+                  "type" : "NUMBER",
+                  "label" : "Confirm Routing Number",
+                  "enabled" : "true",
+                  "maxLength" : "9",
+                  "visible" : "true",
+                  "name" : "payors[0].additionalFields.achRoutingNumberConfirm"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "Account Number",
+                  "subLabel" : "Do NOT use debit/credit card numbers",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "true",
+                  "name" : "payors[0].achAccountNumber"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Confirm Account Number",
+                  "enabled" : "true",
+                  "maxLength" : "20",
+                  "visible" : "true",
+                  "name" : "payors[0].additionalFields.achAccountNumberConfirm"
+                } ]
+              } ]
+            }
+          } ]
+        } ],
+        "title" : "Payment"
+      }, {
+        "rows" : [ {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "HEADING",
+            "label" : "Producer Statement",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "ui.producerStatementHeading"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "RADIO",
+            "label" : "I/We certify that during an interview with the Proposed Insured(s), I/we asked each question exactly as written and recorded the answers provided by the Proposed Insured(s) completely and accurately.",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "additionalFields.askedEachQuestion"
+          } ]
+        }, {
+          "indent" : "0",
+          "fields" : [ {
+            "type" : "REPEATABLE_GROUP",
+            "label" : "",
+            "enabled" : "true",
+            "visible" : "true",
+            "name" : "sellingProducers",
+            "group" : {
+              "title" : "Selling Producer(s)",
+              "rows" : [ {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "First Name",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "true",
+                  "name" : "sellingProducers[$].firstName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Middle Initial",
+                  "enabled" : "true",
+                  "maxLength" : "1",
+                  "visible" : "true",
+                  "name" : "sellingProducers[$].middleName"
+                }, {
+                  "type" : "TEXT",
+                  "label" : "Last Name",
+                  "enabled" : "true",
+                  "maxLength" : "40",
+                  "visible" : "true",
+                  "name" : "sellingProducers[$].lastName"
+                } ]
+              }, {
+                "indent" : "0",
+                "fields" : [ {
+                  "type" : "TEXT",
+                  "label" : "E-mail Address",
+                  "enabled" : "true",
+                  "visible" : "true",
+                  "name" : "sellingProducers[$].emailAddress"
+                }, {
+                  "type" : "NUMBER",
+                  "label" : "Producer Number",
+                  "enabled" : "true",
+                  "maxLength" : "19",
+                  "visible" : "true",
+                  "name" : "sellingProducers[$].producerNumber"
+                } ]
+              } ]
+            }
+          } ]
+        } ],
+        "title" : "Producer Screen"
+      } ]
+    }
+  },
+  "presentation" : {
+    "functions" : { }
+  },
+  "calculatedFieldsOrder" : [ "sellingProducers.additionalFields.sellingProducersFullName", "additionalFields.isBankServicePlan", "insureds.mailingAddress.city", "insureds.additionalFields.premiumHolderChild", "insureds.mailingAddress.state", "productDefinitionInfo.productId", "productDefinitionInfo.productDefinitionVersion", "insureds.additionalFields.fullResidentialAddress", "insureds.coverages.BASE.benefitAmount", "issueState", "insureds.additionalFields.age", "insureds.additionalFields.insuredFullName", "insureds.mailingAddress.addressLine2", "insureds.mailingAddress.zipCode", "insureds.mailingAddress.addressLine1", "beneficiaries.additionalFields.fullName", "insureds.coverages.BASE.additionalFields.annualPremiumAmount", "additionalFields.annualPremiumAmount", "insureds.coverages.BASE.additionalFields.monthlyPremiumAmount", "insureds.coverages.BASE.additionalFields.semiannualPremiumAmount", "insureds.coverages.BASE.additionalFields.quarterlyPremiumAmount", "additionalFields.monthlyPremiumAmount", "additionalFields.quarterlyPremiumAmount", "additionalFields.semiannualPremiumAmount", "insureds.coverages.BASE.premiumAmount", "policyPremiumAmount" ],
+  "functions" : { },
+  "tables" : {
+    "iccStateTbl" : {
+      "columns" : [ "issueState" ],
+      "rows" : [ [ "AL" ], [ "AK" ], [ "AZ" ], [ "AR" ], [ "CA" ], [ "CT" ], [ "DE" ], [ "DC" ], [ "FL" ], [ "GA" ], [ "HI" ], [ "ID" ], [ "IL" ], [ "IN" ], [ "IA" ], [ "KS" ], [ "KY" ], [ "LA" ], [ "ME" ], [ "MD" ], [ "MI" ], [ "MS" ], [ "MO" ], [ "NE" ], [ "NH" ], [ "NJ" ], [ "NM" ], [ "NC" ], [ "ND" ], [ "OH" ], [ "OR" ], [ "PA" ], [ "PR" ], [ "RI" ], [ "SC" ], [ "TN" ], [ "TX" ], [ "UT" ], [ "VT" ], [ "VA" ], [ "WA" ], [ "WV" ], [ "WI" ] ],
+      "displayValues" : {
+        "AL" : "AL",
+        "AK" : "AK",
+        "AZ" : "AZ",
+        "AR" : "AR",
+        "CA" : "CA",
+        "CT" : "CT",
+        "DE" : "DE",
+        "DC" : "DC",
+        "FL" : "FL",
+        "GA" : "GA",
+        "HI" : "HI",
+        "ID" : "ID",
+        "IL" : "IL",
+        "IN" : "IN",
+        "IA" : "IA",
+        "KS" : "KS",
+        "KY" : "KY",
+        "LA" : "LA",
+        "ME" : "ME",
+        "MD" : "MD",
+        "MI" : "MI",
+        "MS" : "MS",
+        "MO" : "MO",
+        "NE" : "NE",
+        "NH" : "NH",
+        "NJ" : "NJ",
+        "NM" : "NM",
+        "NC" : "NC",
+        "ND" : "ND",
+        "OH" : "OH",
+        "OR" : "OR",
+        "PA" : "PA",
+        "PR" : "PR",
+        "RI" : "RI",
+        "SC" : "SC",
+        "TN" : "TN",
+        "TX" : "TX",
+        "UT" : "UT",
+        "VT" : "VT",
+        "VA" : "VA",
+        "WA" : "WA",
+        "WV" : "WV",
+        "WI" : "WI"
+      }
+    },
+    "productTypeTbl" : {
+      "columns" : [ "productType" ],
+      "rows" : [ [ "INDIVIDUAL" ], [ "INDIVIDUAL_AND_SPOUSE" ], [ "INDIVIDUAL_AND_CHILDREN" ], [ "FAMILY" ] ],
+      "displayValues" : {
+        "INDIVIDUAL" : "Individual",
+        "INDIVIDUAL_AND_SPOUSE" : "Individual + Spouse only",
+        "INDIVIDUAL_AND_CHILDREN" : "Individual + Children only",
+        "FAMILY" : "Individual + Spouse + Children"
+      }
+    },
+    "insuredTypeTbl" : {
+      "columns" : [ "productType", "insuredType" ],
+      "rows" : [ [ "INDIVIDUAL", "PRIMARY" ], [ "INDIVIDUAL_AND_SPOUSE", "PRIMARY" ], [ "INDIVIDUAL_AND_SPOUSE", "SPOUSE" ], [ "INDIVIDUAL_AND_CHILDREN", "PRIMARY" ], [ "INDIVIDUAL_AND_CHILDREN", "CHILD" ], [ "FAMILY", "PRIMARY" ], [ "FAMILY", "SPOUSE" ], [ "FAMILY", "CHILD" ] ],
+      "displayValues" : {
+        "PRIMARY" : "Primary",
+        "SPOUSE" : "Spouse",
+        "CHILD" : "Child"
+      }
+    },
+    "productStateApproveTbl" : {
+      "columns" : [ "approvedState" ],
+      "rows" : [ [ "AL" ], [ "AK" ], [ "AZ" ], [ "AR" ], [ "CA" ], [ "CO" ], [ "CT" ], [ "DE" ], [ "DC" ], [ "FL" ], [ "GA" ], [ "HI" ], [ "ID" ], [ "IL" ], [ "IN" ], [ "IA" ], [ "KS" ], [ "KY" ], [ "LA" ], [ "ME" ], [ "MD" ], [ "MI" ], [ "MS" ], [ "MO" ], [ "MT" ], [ "NE" ], [ "NV" ], [ "NH" ], [ "NJ" ], [ "NM" ], [ "NC" ], [ "ND" ], [ "OH" ], [ "OK" ], [ "OR" ], [ "PA" ], [ "PR" ], [ "RI" ], [ "SC" ], [ "SD" ], [ "TN" ], [ "TX" ], [ "UT" ], [ "VT" ], [ "VA" ], [ "WA" ], [ "WV" ], [ "WI" ] ],
+      "displayValues" : {
+        "AL" : "AL",
+        "AK" : "AK",
+        "AZ" : "AZ",
+        "AR" : "AR",
+        "CA" : "CA",
+        "CO" : "CO",
+        "CT" : "CT",
+        "DE" : "DE",
+        "DC" : "DC",
+        "FL" : "FL",
+        "GA" : "GA",
+        "HI" : "HI",
+        "ID" : "ID",
+        "IL" : "IL",
+        "IN" : "IN",
+        "IA" : "IA",
+        "KS" : "KS",
+        "KY" : "KY",
+        "LA" : "LA",
+        "ME" : "ME",
+        "MD" : "MD",
+        "MI" : "MI",
+        "MS" : "MS",
+        "MO" : "MO",
+        "MT" : "MT",
+        "NE" : "NE",
+        "NV" : "NV",
+        "NH" : "NH",
+        "NJ" : "NJ",
+        "NM" : "NM",
+        "NC" : "NC",
+        "ND" : "ND",
+        "OH" : "OH",
+        "OK" : "OK",
+        "OR" : "OR",
+        "PA" : "PA",
+        "PR" : "PR",
+        "RI" : "RI",
+        "SC" : "SC",
+        "SD" : "SD",
+        "TN" : "TN",
+        "TX" : "TX",
+        "UT" : "UT",
+        "VT" : "VT",
+        "VA" : "VA",
+        "WA" : "WA",
+        "WV" : "WV",
+        "WI" : "WI"
+      }
+    },
+    "stateTbl" : {
+      "columns" : [ "state" ],
+      "rows" : [ [ "AL" ], [ "AK" ], [ "AZ" ], [ "AR" ], [ "CA" ], [ "CO" ], [ "CT" ], [ "DE" ], [ "DC" ], [ "FL" ], [ "GA" ], [ "HI" ], [ "ID" ], [ "IL" ], [ "IN" ], [ "IA" ], [ "KS" ], [ "KY" ], [ "LA" ], [ "ME" ], [ "MD" ], [ "MA" ], [ "MI" ], [ "MN" ], [ "MS" ], [ "MO" ], [ "MT" ], [ "NE" ], [ "NV" ], [ "NH" ], [ "NJ" ], [ "NM" ], [ "NY" ], [ "NC" ], [ "ND" ], [ "OH" ], [ "OK" ], [ "OR" ], [ "PA" ], [ "PR" ], [ "RI" ], [ "SC" ], [ "SD" ], [ "TN" ], [ "TX" ], [ "UT" ], [ "VT" ], [ "VI" ], [ "VA" ], [ "WA" ], [ "WV" ], [ "WI" ], [ "WY" ] ],
+      "displayValues" : {
+        "AL" : "AL",
+        "AK" : "AK",
+        "AZ" : "AZ",
+        "AR" : "AR",
+        "CA" : "CA",
+        "CO" : "CO",
+        "CT" : "CT",
+        "DE" : "DE",
+        "DC" : "DC",
+        "FL" : "FL",
+        "GA" : "GA",
+        "HI" : "HI",
+        "ID" : "ID",
+        "IL" : "IL",
+        "IN" : "IN",
+        "IA" : "IA",
+        "KS" : "KS",
+        "KY" : "KY",
+        "LA" : "LA",
+        "ME" : "ME",
+        "MD" : "MD",
+        "MA" : "MA",
+        "MI" : "MI",
+        "MN" : "MN",
+        "MS" : "MS",
+        "MO" : "MO",
+        "MT" : "MT",
+        "NE" : "NE",
+        "NV" : "NV",
+        "NH" : "NH",
+        "NJ" : "NJ",
+        "NM" : "NM",
+        "NY" : "NY",
+        "NC" : "NC",
+        "ND" : "ND",
+        "OH" : "OH",
+        "OK" : "OK",
+        "OR" : "OR",
+        "PA" : "PA",
+        "PR" : "PR",
+        "RI" : "RI",
+        "SC" : "SC",
+        "SD" : "SD",
+        "TN" : "TN",
+        "TX" : "TX",
+        "UT" : "UT",
+        "VT" : "VT",
+        "VI" : "VI",
+        "VA" : "VA",
+        "WA" : "WA",
+        "WV" : "WV",
+        "WI" : "WI",
+        "WY" : "WY"
+      }
+    }
+  },
+  "communicationManifest" : {
+    "definitions" : { }
+  },
+  "ratesAndFactors" : {
+    "metadata" : {
+      "baseRate" : {
+        "required" : "true",
+        "variesAt" : [ {
+          "referencePath" : "insureds"
+        } ]
+      },
+      "spouseRate" : {
+        "required" : "{var spouse = false; for(var x = 0; x < length(parent.parent.insureds); x = x + 1) { if (parent.parent.insureds[x].insuredType === 'SPOUSE') { spouse = true; } } return spouse;}",
+        "variesAt" : [ {
+          "referencePath" : "insureds"
+        } ]
+      },
+      "childrenRate" : {
+        "required" : "{var numChildren = 0; for(var x = 0; x < length(parent.parent.insureds); x = x + 1) { if (parent.parent.insureds[x].insuredType === 'CHILD') { numChildren = numChildren + 1; } } return numChildren > 0;}",
+        "variesAt" : [ ]
+      },
+      "ropRiderFactors" : {
+        "required" : "{return length(parent.parent.additionalFields.policyReturnOfPremiumRider) > 0;}",
+        "variesAt" : [ ]
+      }
+    },
+    "supportsDefinedVariableRates" : true,
+    "rateBearingFields" : [ "insureds.insuredType", "productInfo.productType", "issueState", "insureds.gender", "insureds.additionalFields.age", "additionalFields.policyReturnOfPremiumRider" ]
+  },
+  "adminUIForm" : {
+    "adminSystem" : "SOCOTRA",
+    "sections" : [ {
+      "title" : "Policy",
+      "fields" : [ {
+        "type" : "FIELD",
+        "name" : "productDefinitionInfo.productId",
+        "label" : "Product ID (Calculated)"
+      }, {
+        "type" : "FIELD",
+        "name" : "productDefinitionInfo.productDefinitionVersion",
+        "label" : "Product Version (Calculated)"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.proposedInsuredInsuredThePayor",
+        "label" : "Proposed Insured Same As Payor"
+      }, {
+        "type" : "GROUP",
+        "name" : "additionalFields.policyReturnOfPremiumRider",
+        "label" : "Additional Fields Policy Return Of Premium Rider",
+        "heading" : "Additional Info",
+        "fields" : [ {
+          "type" : "FIELD",
+          "name" : "additionalFields.policyReturnOfPremiumRider.coverageStatus",
+          "label" : "Additional Fields Policy Return Of Premium Rider Coverage Status",
+          "heading" : "Additional Info"
+        } ]
+      }, {
+        "type" : "GROUP",
+        "name" : "beneficiaries",
+        "label" : "Beneficiaries",
+        "fields" : [ {
+          "type" : "FIELD",
+          "name" : "beneficiaries.additionalFields.fullName",
+          "label" : "Beneficiaries Additional Fields Full Name",
+          "heading" : "Additional Info"
+        }, {
+          "type" : "FIELD",
+          "name" : "beneficiaries.firstName",
+          "label" : "Beneficiaries First Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "beneficiaries.lastName",
+          "label" : "Beneficiaries Last Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "beneficiaries.middleName",
+          "label" : "Beneficiaries Middle Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "beneficiaries.relationshipToInsured",
+          "label" : "Beneficiaries Relationship To Insured"
+        }, {
+          "type" : "FIELD",
+          "name" : "beneficiaries.relationshipToInsuredOther",
+          "label" : "Beneficiaries Relationship To Insured Other"
+        } ]
+      }, {
+        "type" : "GROUP",
+        "name" : "payors",
+        "label" : "Payors",
+        "fields" : [ {
+          "type" : "FIELD",
+          "name" : "payors.achAccountNumber",
+          "label" : "Payors Ach Account Number",
+          "heading" : "Additional Info"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.achAccountType",
+          "label" : "Payors Ach Account Type"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.achInstitutionName",
+          "label" : "Payors Ach Institution Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.achRoutingNumber",
+          "label" : "Payors Ach Routing Number"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.additionalFields.achAccountNumberConfirm",
+          "label" : "Payors Additional Fields Ach Account Number Confirm"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.additionalFields.achRoutingNumberConfirm",
+          "label" : "Payors Additional Fields Ach Routing Number Confirm"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.additionalFields.nameOnBankAccount",
+          "label" : "Payors Additional Fields Name On Bank Account"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.billingAddress.addressLine1",
+          "label" : "Payors Billing Address Address Line 1"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.billingAddress.addressLine2",
+          "label" : "Payors Billing Address Address Line 2"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.billingAddress.city",
+          "label" : "Payors Billing Address City"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.billingAddress.state",
+          "label" : "Payors Billing Address State"
+        }, {
+          "type" : "FIELD",
+          "name" : "payors.billingAddress.zipCode",
+          "label" : "Payors Billing Address Zip Code"
+        } ]
+      }, {
+        "type" : "GROUP",
+        "name" : "sellingProducers",
+        "label" : "Selling Producers",
+        "fields" : [ {
+          "type" : "FIELD",
+          "name" : "sellingProducers.additionalFields.sellingProducersFullName",
+          "label" : "Selling Producers Additional Fields Selling Producers Full Name",
+          "heading" : "Additional Info"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.applicationSignature.signatureCity",
+          "label" : "Selling Producers Application Signature Signature City"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.applicationSignature.signatureDate",
+          "label" : "Selling Producers Application Signature Signature Date"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.applicationSignature.signatureName",
+          "label" : "Selling Producers Application Signature Signature Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.applicationSignature.signatureState",
+          "label" : "Selling Producers Application Signature Signature State"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.applicationSignature.signatureTimestamp",
+          "label" : "Selling Producers Application Signature Signature Timestamp"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.applicationSignature.signatureType",
+          "label" : "Selling Producers Application Signature Signature Type"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.emailAddress",
+          "label" : "Selling Producers Email Address"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.firstName",
+          "label" : "Selling Producers First Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.lastName",
+          "label" : "Selling Producers Last Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.middleName",
+          "label" : "Selling Producers Middle Name"
+        }, {
+          "type" : "FIELD",
+          "name" : "sellingProducers.producerNumber",
+          "label" : "Selling Producers Producer Number"
+        } ]
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.annualPremiumAmount",
+        "label" : "Additional Fields Annual Premium Amount"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.askedEachQuestion",
+        "label" : "Additional Fields Asked Each Question"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.existingCoverageText",
+        "label" : "Additional Fields Existing Coverage Text"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.isAddingToExistingCoverage",
+        "label" : "Additional Fields Is Adding To Existing Coverage"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.isBankServicePlan",
+        "label" : "Additional Fields Is Bank Service Plan"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.isReplacingExistingCoverage",
+        "label" : "Additional Fields Is Replacing Existing Coverage"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.monthlyPremiumAmount",
+        "label" : "Additional Fields Monthly Premium Amount"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.policyBenefitAmount",
+        "label" : "Additional Fields Policy Benefit Amount"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.quarterlyPremiumAmount",
+        "label" : "Additional Fields Quarterly Premium Amount"
+      }, {
+        "type" : "FIELD",
+        "name" : "additionalFields.semiannualPremiumAmount",
+        "label" : "Additional Fields Semiannual Premium Amount"
+      }, {
+        "type" : "FIELD",
+        "name" : "issueState",
+        "label" : "Issue State"
+      }, {
+        "type" : "FIELD",
+        "name" : "paymentMethod",
+        "label" : "Payment Method"
+      }, {
+        "type" : "FIELD",
+        "name" : "paymentSchedule",
+        "label" : "Payment Schedule"
+      }, {
+        "type" : "FIELD",
+        "name" : "paymentWithdrawalDay",
+        "label" : "Payment Withdrawal Day"
+      }, {
+        "type" : "FIELD",
+        "name" : "policyPremiumAmount",
+        "label" : "Policy Premium Amount"
+      }, {
+        "type" : "FIELD",
+        "name" : "productInfo.productType",
+        "label" : "Product Info Product Type"
+      } ]
+    }, {
+      "title" : "Insureds",
+      "fields" : [ {
+        "type" : "FIELD",
+        "name" : "insureds.firstName",
+        "label" : "First Name"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.lastName",
+        "label" : "Last Name"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.additionalFields.age",
+        "label" : "Insureds Additional Fields Age",
+        "heading" : "Additional Info"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.additionalFields.fullResidentialAddress",
+        "label" : "Insureds Additional Fields Full Residential Address"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.additionalFields.insuredFullName",
+        "label" : "Insureds Additional Fields Insured Full Name"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.additionalFields.mailingAddressIndicator",
+        "label" : "Insureds Additional Fields Mailing Address Indicator"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.additionalFields.premiumHolderChild",
+        "label" : "Insureds Additional Fields Premium Holder Child"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.applicationSignature.signatureCity",
+        "label" : "Insureds Application Signature Signature City"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.applicationSignature.signatureDate",
+        "label" : "Insureds Application Signature Signature Date"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.applicationSignature.signatureName",
+        "label" : "Insureds Application Signature Signature Name"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.applicationSignature.signatureState",
+        "label" : "Insureds Application Signature Signature State"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.applicationSignature.signatureTimestamp",
+        "label" : "Insureds Application Signature Signature Timestamp"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.applicationSignature.signatureType",
+        "label" : "Insureds Application Signature Signature Type"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.birthDate",
+        "label" : "Insureds Birth Date"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.citizenship.additionalFields.dateOfArrival",
+        "label" : "Insureds Citizenship Additional Fields Date Of Arrival"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.citizenship.citizen",
+        "label" : "Insureds Citizenship Citizen"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.citizenship.permanentResidentCard",
+        "label" : "Insureds Citizenship Permanent Resident Card"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.citizenship.permanentResidentCardNumber",
+        "label" : "Insureds Citizenship Permanent Resident Card Number"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.electronicConsentSignature.signatureCity",
+        "label" : "Insureds Electronic Consent Signature Signature City"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.electronicConsentSignature.signatureDate",
+        "label" : "Insureds Electronic Consent Signature Signature Date"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.electronicConsentSignature.signatureName",
+        "label" : "Insureds Electronic Consent Signature Signature Name"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.electronicConsentSignature.signatureState",
+        "label" : "Insureds Electronic Consent Signature Signature State"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.electronicConsentSignature.signatureTimestamp",
+        "label" : "Insureds Electronic Consent Signature Signature Timestamp"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.electronicConsentSignature.signatureType",
+        "label" : "Insureds Electronic Consent Signature Signature Type"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.emailAddress",
+        "label" : "Insureds Email Address"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.gender",
+        "label" : "Insureds Gender"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.homePhoneNumber",
+        "label" : "Insureds Home Phone Number"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.insuredType",
+        "label" : "Insureds Insured Type"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.mailingAddress.addressLine1",
+        "label" : "Insureds Mailing Address Address Line 1"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.mailingAddress.addressLine2",
+        "label" : "Insureds Mailing Address Address Line 2"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.mailingAddress.city",
+        "label" : "Insureds Mailing Address City"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.mailingAddress.state",
+        "label" : "Insureds Mailing Address State"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.mailingAddress.zipCode",
+        "label" : "Insureds Mailing Address Zip Code"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.middleName",
+        "label" : "Insureds Middle Name"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.residentialAddress.addressLine1",
+        "label" : "Insureds Residential Address Address Line 1"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.residentialAddress.addressLine2",
+        "label" : "Insureds Residential Address Address Line 2"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.residentialAddress.city",
+        "label" : "Insureds Residential Address City"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.residentialAddress.state",
+        "label" : "Insureds Residential Address State"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.residentialAddress.zipCode",
+        "label" : "Insureds Residential Address Zip Code"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.socialSecurityNumber",
+        "label" : "Insureds Social Security Number"
+      }, {
+        "type" : "FIELD",
+        "name" : "insureds.willSignInState",
+        "label" : "Insureds Will Sign In State"
+      } ]
+    }, {
+      "title" : "Coverages",
+      "fields" : [ {
+        "type" : "GROUP",
+        "name" : "insureds.coverages.BASE",
+        "label" : "Base",
+        "fields" : [ {
+          "type" : "FIELD",
+          "name" : "insureds.coverages.BASE.benefitAmount",
+          "label" : "Benefit Amount"
+        }, {
+          "type" : "FIELD",
+          "name" : "insureds.coverages.BASE.additionalFields.annualPremiumAmount",
+          "label" : "Insureds Coverages BASE Additional Fields Annual Premium Amount",
+          "heading" : "Additional Info"
+        }, {
+          "type" : "FIELD",
+          "name" : "insureds.coverages.BASE.additionalFields.monthlyPremiumAmount",
+          "label" : "Insureds Coverages BASE Additional Fields Monthly Premium Amount"
+        }, {
+          "type" : "FIELD",
+          "name" : "insureds.coverages.BASE.additionalFields.quarterlyPremiumAmount",
+          "label" : "Insureds Coverages BASE Additional Fields Quarterly Premium Amount"
+        }, {
+          "type" : "FIELD",
+          "name" : "insureds.coverages.BASE.additionalFields.semiannualPremiumAmount",
+          "label" : "Insureds Coverages BASE Additional Fields Semiannual Premium Amount"
+        }, {
+          "type" : "FIELD",
+          "name" : "insureds.coverages.BASE.premiumAmount",
+          "label" : "Insureds Coverages BASE Premium Amount"
+        } ]
+      } ]
+    } ]
+  },
+  "processMetamodels" : { },
+  "premiumImpactingFields" : [ "insureds.insuredType", "insureds.birthDate", "insureds.residentialAddress.state", "productInfo.productType", "additionalFields.monthlyPremiumAmount", "insureds", "issueState", "insureds.additionalFields.age", "additionalFields.policyBenefitAmount", "additionalFields.annualPremiumAmount", "insureds.gender", "additionalFields.quarterlyPremiumAmount", "paymentSchedule", "policyPremiumAmount", "additionalFields.policyReturnOfPremiumRider", "additionalFields.semiannualPremiumAmount" ],
+  "featureSettings" : {
+    "SPLIT_APPLICATION" : "DISABLED",
+    "ADMIN_PRE_ISSUE" : "DISABLED"
+  }
+}

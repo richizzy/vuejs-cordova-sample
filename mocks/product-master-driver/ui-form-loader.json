@@ -1,0 +1,1133 @@
+{
+  "sections":[
+    {
+      "title": "Personal Info",
+      "rows": [
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "ui.personal_section_heading",
+              "label": "Policy/Policyholder Information",
+              "subLabel": "",
+              "type": "HEADING",
+              "description": "",
+              "value": "",
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "insured.fields.first_name",
+              "label": "First Name",
+              "subLabel": "",
+              "type": "TEXT",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "insured.fields.middle_initial",
+              "label": "Middle Initial",
+              "subLabel": "",
+              "type": "TEXT",
+              "description": "",
+              "value": "",
+              "maxLength": 1,
+              "width": 1,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "insured.fields.last_name",
+              "label": "Last Name",
+              "subLabel": "",
+              "type": "TEXT",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "LOOKUP",
+              "label": "State",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.insured.fields.state",
+              "tableName": "state_tbl",
+              "column": "abbreviation",
+              "filters": [],
+              "visible": true,
+              "enabled": true
+            },
+            {
+              "type": "NUMBER",
+              "label": "Age",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.insured.fields.age",
+              "min": null,
+              "max": null,
+              "decimalPlaces": null,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "insured.fields.gender_at_birth",
+              "label": "Gender (at birth)",
+              "subLabel": "",
+              "type": "RADIO",
+              "enabled": true,
+              "valid": true,
+              "visible": true,
+              "value": "",
+              "description": "What was your gender at birth?",
+              "options": [
+                {
+                  "label": "Female",
+                  "value": "F",
+                  "visible": true
+                },
+                {
+                  "label": "Male",
+                  "value": "M",
+                  "visible": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Benefit Period",
+              "value": "Base.benefit_period",
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.coverages.AutoIncreaseBenefitRider.fields.benefit_period",
+              "tableName": "benefit_prd_tbl",
+              "column": null,
+              "filters": [],
+              "visible": true,
+              "enabled": true,
+              "options": [
+                {
+                  "label": "6m",
+                  "value": "6m",
+                  "visible": true
+                },
+                {
+                  "label": "1yr",
+                  "value": "1yr",
+                  "visible": true
+                },
+                {
+                  "label": "2yr",
+                  "value": "1yr",
+                  "visible": true
+                },
+                {
+                  "label": "10yr",
+                  "value": "1yr",
+                  "visible": true
+                },
+                {
+                  "label": "t65",
+                  "value": "1yr",
+                  "visible": true
+                },
+                {
+                  "label": "t67",
+                  "value": "1yr",
+                  "visible": true
+                },
+                {
+                  "label": "t70",
+                  "value": "1yr",
+                  "visible": true
+                }
+              ]
+            },
+            {
+              "type": "SELECT",
+              "label": "Elimination Period",
+              "value": "Base.elimination_period",
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.coverages.AutoIncreaseBenefitRider.fields.elimination_period",
+              "visible": true,
+              "enabled": true,
+              "options": [
+                {
+                  "label": "30",
+                  "value": "30",
+                  "visible": true
+                },
+                {
+                  "label": "60",
+                  "value": "60",
+                  "visible": true
+                },
+                {
+                  "label": "90",
+                  "value": "90",
+                  "visible": true
+                },
+                {
+                  "label": "180",
+                  "value": "180",
+                  "visible": true
+                },
+                {
+                  "label": "365",
+                  "value": "365",
+                  "visible": true
+                },
+                {
+                  "label": "730",
+                  "value": "730",
+                  "visible": true
+                }
+              ]
+            },
+            {
+              "type": "SELECT",
+              "label": "Occupation Class",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.insured.fields.occupation_class",
+              "tableName": "occ_tbl",
+              "column": null,
+              "filters": [],
+              "visible": true,
+              "enabled": true,
+              "options": [
+                {
+                  "label": "1A",
+                  "value": "1A",
+                  "visible": true
+                },
+                {
+                  "label": "2A",
+                  "value": "2A",
+                  "visible": true
+                },
+                {
+                  "label": "3A",
+                  "value": "3A",
+                  "visible": true
+                },
+                {
+                  "label": "4A",
+                  "value": "4A",
+                  "visible": true
+                },
+                {
+                  "label": "5A",
+                  "value": "5A",
+                  "visible": true
+                },
+                {
+                  "label": "6A",
+                  "value": "6A",
+                  "visible": true
+                },
+                {
+                  "label": "2M",
+                  "value": "2M",
+                  "visible": true
+                },
+                {
+                  "label": "3M",
+                  "value": "3M",
+                  "visible": true
+                },
+                {
+                  "label": "4M",
+                  "value": "4M",
+                  "visible": true
+                },
+                {
+                  "label": "5M",
+                  "value": "5M",
+                  "visible": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Tobacco?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.insured.fields.tobacco",
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": "Y",
+                  "visible": true
+                },
+                {
+                  "label": "No",
+                  "value": "N",
+                  "visible": true
+                }
+              ],
+              "visible": true,
+              "enabled": true
+            },
+            {
+              "type": "SELECT",
+              "label": "UW CLass",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.insured.fields.risk_class",
+              "options": [
+                {
+                  "label": "Standard",
+                  "value": "Standard",
+                  "visible": true
+                },
+                {
+                  "label": "125%",
+                  "value": "125",
+                  "visible": true
+                },
+                {
+                  "label": "150%",
+                  "value": "150",
+                  "visible": true
+                },
+                {
+                  "label": "175%",
+                  "value": "175",
+                  "visible": true
+                },
+                {
+                  "label": "200%",
+                  "value": "200",
+                  "visible": true
+                }
+              ],
+              "visible": true,
+              "enabled": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Modal Period?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.insured.fields.modal_period",
+              "visible": true,
+              "enabled": true,
+              "options": [
+                {
+                  "label": "Annual",
+                  "value": "A",
+                  "visible": true
+                },
+                {
+                  "label": "Semi-Annual",
+                  "value": "S",
+                  "visible": true
+                },
+                {
+                  "label": "Quarterly",
+                  "value": "Q",
+                  "visible": true
+                },
+                {
+                  "label": "Monthly",
+                  "value": "M",
+                  "visible": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "ui.discount_section_heading",
+              "label": "Discounts",
+              "subLabel": "",
+              "type": "HEADING",
+              "description": "",
+              "value": "",
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Discount Self Employed",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "contexts": [
+                "Producer Statement"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.discount_self_employed",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Discount Multi-Policy",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "contexts": [
+                "Producer Statement"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.discount_multi-policy",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Discount Association Group",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "contexts": [
+                "Producer Statement"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.discount_association_group",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Discount Multi-Policy",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "contexts": [
+                "Producer Statement"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.discount_multi-policy",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Discount Household",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "contexts": [
+                "Producer Statement"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.discount_household",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Discount Common Employer",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "contexts": [
+                "Producer Statement"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.discount_common_employer",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "ui.policy_structure_heading",
+              "label": "Policy Structure",
+              "subLabel": "",
+              "type": "HEADING",
+              "description": "",
+              "value": "",
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Policy Type",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "true",
+              "width": null,
+              "contexts": [
+                "Quote",
+                "Illustration",
+                "Application"
+              ],
+              "validationRule": "",
+              "referenceName": "DI_Individual_Accident_Only.fields.product_name",
+              "enabled": true,
+              "visible": true,
+              "options": [
+                {
+                  "label": "Accident Only Disability Income",
+                  "value": "Accident_Only_Disability_Income",
+                  "visible": true
+                },
+                {
+                  "label": "Accident/Sickness Disability Income",
+                  "value": "Accident_Sickness_Disability_Income",
+                  "visible": true
+                }
+              ]
+            },
+            {
+              "type": "SELECT",
+              "label": "CAT Rider?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "CI Rider?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "HI Rider?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "AME Rider?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "True",
+                  "value": "T",
+                  "visible": true
+                },
+                {
+                  "label": "False",
+                  "value": "F",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "ui.benefit_amounts_structure_heading",
+              "label": "Benefit Amounts",
+              "subLabel": "",
+              "type": "HEADING",
+              "description": "",
+              "value": "",
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "base.fields.accident_benefit",
+              "label": "Base - Accident Benefit",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "base.fields.sickness_benefit",
+              "label": "Base - Sickness Benefit",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "sis.fields.accident_benefit",
+              "label": "SIS - Accident Benefit",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "sis.fields.sickness_benefit",
+              "label": "SIS - Sickness Benefit",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "cat.fields.benefit",
+              "label": "CAT - Benefit",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "cat.fields.elimination_period",
+              "label": "CAT - Elimination Period",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "name": "cat.fields.benefit_period",
+              "label": "CAT - Benefit Period",
+              "subLabel": "",
+              "type": "NUMBER",
+              "description": "",
+              "value": "",
+              "maxLength": 40,
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "name": "ui.other_riders_structure_heading",
+              "label": "Other Riders",
+              "subLabel": "",
+              "type": "HEADING",
+              "description": "",
+              "value": "",
+              "width": 40,
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Definition of Disability",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "2yr Own Occ",
+                  "value": "2yr_Own_Occ",
+                  "visible": true
+                },
+                {
+                  "label": "Extended Your Occ",
+                  "value": "Extended_Your_Occ",
+                  "visible": true
+                },
+                {
+                  "label": "Your Occ Plus",
+                  "value": "Your_Occ_Plus",
+                  "visible": true
+                },
+                {
+                  "label": "True Your Occ",
+                  "value": "True_Your_Occ",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "COLA Type",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "None",
+                  "value": "none",
+                  "visible": true
+                },
+                {
+                  "label": "3%",
+                  "value": "3",
+                  "visible": true
+                },
+                {
+                  "label": "6%",
+                  "value": "6",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Residual Type",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "None",
+                  "value": "none",
+                  "visible": true
+                },
+                {
+                  "label": "Residual Only",
+                  "value": "Residual_Only",
+                  "visible": true
+                },
+                {
+                  "label": "Residual and Recovery",
+                  "value": "Residual_and_Recovery",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "MNAD Extension?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": "Y",
+                  "visible": true
+                },
+                {
+                  "label": "No",
+                  "value": "N",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "Future Purchase Option?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": "Y",
+                  "visible": true
+                },
+                {
+                  "label": "No",
+                  "value": "N",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "fields": [
+            {
+              "type": "SELECT",
+              "label": "Automatic Increase Rider?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": "Y",
+                  "visible": true
+                },
+                {
+                  "label": "No",
+                  "value": "N",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            },
+            {
+              "type": "SELECT",
+              "label": "ROP Rider?",
+              "value": null,
+              "description": null,
+              "subLabel": null,
+              "required": "false",
+              "width": null,
+              "validationRule": "",
+              "referenceName": "",
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": "Y",
+                  "visible": true
+                },
+                {
+                  "label": "No",
+                  "value": "N",
+                  "visible": true
+                }
+              ],
+              "enabled": true,
+              "visible": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

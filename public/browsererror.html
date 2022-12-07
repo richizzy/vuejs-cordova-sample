@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Unsupported Browser - Mutual of Omaha</title>
+  <script type="text/javascript">
+    // Trident is the layout engine for IE
+    if (!(window.navigator.userAgent.indexOf('Trident') !== -1 || window.navigator.userAgent.indexOf('MSIE') !== -1)) {
+      const redirectUrl = window.location.search.substring(window.location.search.indexOf("redirectUrl=")+12);
+      window.location.href = decodeURIComponent(redirectUrl);
+    }
+  </script>
+  <meta content="width=device-width, user-scalable=yes, initial-scale=1" name="viewport">
+  <meta
+    content="default-src 'none'; base-uri 'self'; font-src 'self'; form-action 'none'; img-src 'self'; style-src 'self'"
+    http-equiv="Content-Security-Policy">
+  <link href="css/browsererror.css" media="screen" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="wrapper">
+  <h1>
+    This Mutual of Omaha site does not support Internet Explorer. Please try another browser.
+  </h1>
+
+  <div>
+    <h2>Here are the ones we recommend:</h2>
+
+    <table class="supportedBrowsersList">
+      <tr>
+        <td>
+          <div><img alt="Google Chrome" src="./icons/chrome.png"/></div>
+        </td>
+        <td>
+          <div class="supportedBrowserName">
+            Google Chrome
+          </div>
+        </td>
+        <td>
+          <div class="supportedBrowserLink">
+            <a href="https://www.google.com/intl/en/chrome" rel="noopener" target="_blank">
+              Download latest
+            </a>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div><img alt="Mozilla Firefox" src="./icons/firefox.png"/></div>
+        </td>
+        <td>
+          <div class="supportedBrowserName">
+            Mozilla Firefox
+          </div>
+        </td>
+        <td>
+          <div class="supportedBrowserLink">
+            <a href="https://www.mozilla.org/firefox/all/" rel="noopener" target="_blank">
+              Download latest
+            </a>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div><img alt="Microsoft Edge" src="./icons/edge.png"/></div>
+        </td>
+        <td>
+          <div class="supportedBrowserName">
+            Microsoft Edge
+          </div>
+        </td>
+        <td>
+          <div class="supportedBrowserLink">
+            <a href="https://www.microsoft.com/en-us/edge" rel="noopener" target="_blank">
+              Download latest
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

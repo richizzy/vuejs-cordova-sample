@@ -1,0 +1,62 @@
+[
+	{
+		"productId": 1,
+		"productName": "Children's Whole Life",
+		"productCode": "cwl",
+    "hidden": false
+	},
+	{
+		"productId": 2,
+		"productName": "Critical Advantage",
+		"productCode": "ca",
+    "hidden": false
+	},
+	{
+		"productId": 3,
+		"productName": "Guaranteed ADvantage",
+		"productCode": "ga",
+    "hidden": false
+	},
+	{
+		"productId": 4,
+		"productName": "Indexed Universal Life Express",
+		"productCode": "iule",
+    "hidden": false
+	},
+	{
+		"productId": 5,
+		"productName": "Individual Dental",
+		"productCode": "id",
+    "hidden": false
+	},
+	{
+		"productId": 6,
+		"productName": "Living Promise",
+		"productCode": "lp",
+    "hidden": false
+	},
+	{
+		"productId": 7,
+		"productName": "Long Term Care",
+		"productCode": "lc",
+    "hidden": false
+	},
+	{
+		"productId": 8,
+		"productName": "Medicare Supplement",
+		"productCode": "ms",
+    "hidden": false
+	},
+	{
+		"productId": 9,
+		"productName": "Term Life Answers",
+		"productCode": "tla",
+    "hidden": false
+	},
+	{
+		"productId": 10,
+		"productName": "Term Life Express",
+		"productCode": "tle",
+    "hidden": false
+	}
+]
