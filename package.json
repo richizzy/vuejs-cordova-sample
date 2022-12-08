@@ -1,9 +1,9 @@
 {
-  "name": "vuejs-cordova-sample",
-  "version": "0.2.0",
+  "name": "QuotesForSalesProfessionalsApp",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve -p 8080",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "cordova_run": "vue-cli-service build && cd cordova_app && cordova run",

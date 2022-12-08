@@ -2,6 +2,8 @@
 node_modules
 /dist
 /cordova_app/www/
+/cordova_app/platforms/
+/cordova_app/plugins/
 
 # local env files
 .env.local
