@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-versionCode="400000" id="com.mutualofomaha.sales" version="4.0.0-SNAPSHOT" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name short="Quotes">QuotesForSalesProfessionalsApp</name>
+    <name short="Quotes Sample">QuotesForSalesProfessionalsApp</name>
     <description>Mutual of Omaha insurance quoting application.</description>
     <author>Mutual of Omaha Mobile Team</author>
     <content src="index.html" />
